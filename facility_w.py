@@ -161,30 +161,39 @@ if page == 'Event Logging':
                     Rating = col1a.selectbox('Rating.', [0, 1, 2, 3, 'N/A'], key=f"Rating{category}_{location}")
                     comment = col3a.text_input('comment.', '', key=f"comment_{category}_{location}")
                     responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{location}")
-                    uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{location}")
+                    uploaded_file = st.file_uploader(
+                        f"Upload Images {category}", 
+                        type=["jpg", "jpeg", "png"], 
+                        key=f"image_{category}_{location}"
+                    )
                     if st.button(f'Add {category}', key=f"add_{category}_{location}"):
     # تعيين رقم الحدث بناءً على التقييم
                         if Rating in [0, 'N/A']:
-                            event_id = None  # عدم تعيين رقم للحدث
+                            event_id = 'check'  # عدم تعيين رقم للحدث
                         else:
                             event_id = get_next_event_id()  # تعيين رقم للحدث
                     
                         image_path = ""
                         if uploaded_file is not None:
                             try:
+                                # معالجة الصورة بعد تحميلها
                                 image = Image.open(uploaded_file)
                                 if image.mode == "RGBA":
                                     image = image.convert("RGB")
                                 max_size = (800, 600)
                                 image.thumbnail(max_size)
-                                # إذا لم يكن هناك event_id، استخدم اسم مختلف للصورة
+                        
+                                # حفظ الصورة
                                 image_filename = os.path.join('uploaded_images', f"{event_id}.jpg") if event_id else os.path.join('uploaded_images', f"no_id_{uploaded_file.name}")
                                 image.save(image_filename, optimize=True, quality=85)
                                 image_path = image_filename
                                 st.success(f"Image saved successfully as {uploaded_file.name}")
+                        
                             except Exception as e:
                                 st.error(f"An error occurred while saving the image: {str(e)}")
                                 image_path = ""
+                        else:
+                            st.info("Please upload an image or take a photo using your camera.")
                     
                         new_row = {
                             'event id': event_id,

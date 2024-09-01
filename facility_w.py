@@ -191,7 +191,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                            'Date': datetime.now(egypt_tz),
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,
@@ -267,7 +267,7 @@ if page == 'Work Shop Order':
                             new_log_entry = {
                                 'event id': selected_event_id,
                                 'modifier name': modifier_name,
-                                'modification Date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                'modification Date': datetime.now(egypt_tz),
                                 'modification type': 'update Expected repair Date',
                                 'new Date': Expected_repair_Date.strftime('%Y-%m-%d')
                             }

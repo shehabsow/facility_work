@@ -40,10 +40,10 @@ def to_excel(df):
     return output.getvalue()
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
-    df.to_csv('checklist_records.csv', index=False, encoding='utf-8-sig')
+    df.to_csv('checklist_records.csv', index=False, encoding='utf-8')
 
 def save_change_log(df):
-    df.to_csv('change_log.csv', index=False, encoding='utf-8-sig')
+    df.to_csv('change_log.csv', index=False, encoding='utf-8')
 
 # تهيئة بيانات الجلسة
 if 'checklist_df' not in st.session_state:

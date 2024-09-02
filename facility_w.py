@@ -18,7 +18,12 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 
 def load_checklist_data():
     if os.path.exists('checklist_records.csv'):
-        return pd.read_csv('checklist_records.csv',  encoding='utf-8')
+        df = pd.read_csv('checklist_records.csv', encoding='utf-8')
+        # تحويل عمود التاريخ إلى datetime بدون منطقة زمنية (Naive)
+        for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
+            if col in df.columns:
+                df[col] = pd.to_datetime(df[col], errors='coerce').dt.tz_localize(None)
+        return df
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Date', 'Rating', 'responsible person', 
@@ -35,13 +40,11 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
-    # استخدام تنسيق محدد للتواريخ وإزالة معلومات الوقت
+    # تحويل التواريخ إلى نصوص بدون وقت قبل التصدير
     for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
         if col in df.columns:
-            # تحويل النصوص إلى تواريخ باستخدام التنسيق المطلوب
-            df[col] = pd.to_datetime(df[col], errors='coerce')  # تحويل القيم إلى datetime
-            df[col] = df[col].dt.date  # استخراج التاريخ فقط (تجاهل الوقت)
-          
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            df[col] = df[col].astype(str)
 
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
@@ -226,7 +229,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime.now(egypt_tz),
+                            'Date': Date,
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

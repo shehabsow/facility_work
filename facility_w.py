@@ -35,11 +35,13 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
-    # استخدام تنسيق محدد للتواريخ إذا كانت التواريخ تحتوي على معلومات منطقة زمنية
+    # استخدام تنسيق محدد للتواريخ وإزالة معلومات الوقت
     for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
         if col in df.columns:
-            df[col] = pd.to_datetime(df[col], format='%Y-%m-%d ', errors='coerce').dt.tz_localize(None)
-            # يتم استخدام errors='coerce' لتجنب أي أخطاء في التحويل عن طريق تعيين قيم غير صالحة إلى NaT
+            # تحويل النصوص إلى تواريخ باستخدام التنسيق المطلوب
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            # تحويل القيم إلى نصوص لتجنب تغيير التنسيق في Excel
+            df[col] = df[col].astype(str)
 
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:

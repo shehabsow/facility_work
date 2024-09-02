@@ -5,6 +5,7 @@ from datetime import datetime
 from PIL import Image
 import pytz
 import io
+from io import BytesIO
 # إعداد تكوين الصفحة في Streamlit
 st.set_page_config(
     layout="wide",

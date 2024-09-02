@@ -45,7 +45,7 @@ def to_excel(df):
         df.to_excel(writer, index=False, sheet_name='Sheet1')
     return output.getvalue()
 
-excel_data = to_excel(st.session_state.checklist_df)
+
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
     df.to_csv('checklist_records.csv', index=False, encoding='utf-8')

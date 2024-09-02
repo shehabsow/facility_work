@@ -41,7 +41,7 @@ def to_excel(df):
             # تحويل النصوص إلى تواريخ باستخدام التنسيق المطلوب
             df[col] = pd.to_datetime(df[col], errors='coerce')  # تحويل القيم إلى datetime
             df[col] = df[col].dt.date  # استخراج التاريخ فقط (تجاهل الوقت)
-            df[col] = df[col].astype(str)  # تحويل القيم إلى نصوص لتجنب تغيير التنسيق في Excel
+          
 
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:

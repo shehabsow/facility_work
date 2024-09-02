@@ -309,7 +309,7 @@ if page == 'Work Shop Order':
                             new_log_entry = {
                                 'event id': selected_event_id,
                                 'modifier name': modifier_name,
-                                'modification Date': datetime.now(egypt_tz),
+                                'modification Date': datetime.now(egypt_tz).replace(tzinfo=None),
                                 'modification type': 'update Expected repair Date',
                                 'new Date': Expected_repair_Date.strftime('%Y-%m-%d')
                             }
@@ -326,7 +326,7 @@ if page == 'Work Shop Order':
                             new_log_entry = {
                                 'event id': selected_event_id,
                                 'modifier name': modifier_name,
-                                'modification Date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                'modification Date': datetime.now(egypt_tz).replace(tzinfo=None),
                                 'modification type': 'update Actual Repair Date',
                                 'new Date': Actual_Repair_Date.strftime('%Y-%m-%d')
                             }

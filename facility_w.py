@@ -34,7 +34,15 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
-    output = io.BytesIO()
+    # تحويل التواريخ ذات المنطقة الزمنية إلى تواريخ بدون منطقة زمنية
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date']).dt.tz_localize(None)
+    if 'Expected repair Date' in df.columns:
+        df['Expected repair Date'] = pd.to_datetime(df['Expected repair Date']).dt.tz_localize(None)
+    if 'Actual Repair Date' in df.columns:
+        df['Actual Repair Date'] = pd.to_datetime(df['Actual Repair Date']).dt.tz_localize(None)
+
+    output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
     return output.getvalue()

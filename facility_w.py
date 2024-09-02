@@ -40,16 +40,12 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
-    # تحويل التواريخ إلى نصوص بدون وقت قبل التصدير
-    for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            df[col] = df[col].astype(str)
-
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
     return output.getvalue()
+
+excel_data = to_excel(st.session_state.checklist_df)
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
     df.to_csv('checklist_records.csv', index=False, encoding='utf-8')
@@ -229,7 +225,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': Date,
+                            'Date': datetime(),
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

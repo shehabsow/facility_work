@@ -38,7 +38,7 @@ def to_excel(df):
     # استخدام تنسيق محدد للتواريخ إذا كانت التواريخ تحتوي على معلومات منطقة زمنية
     for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
         if col in df.columns:
-            df[col] = pd.to_datetime(df[col], format='%Y-%m-%d %H:%M:%S%z', errors='coerce').dt.tz_localize('Africa/Cairo')
+            df[col] = pd.to_datetime(df[col], format='%Y-%m-%d ', errors='coerce').dt.tz_localize(None)
             # يتم استخدام errors='coerce' لتجنب أي أخطاء في التحويل عن طريق تعيين قيم غير صالحة إلى NaT
 
     output = BytesIO()

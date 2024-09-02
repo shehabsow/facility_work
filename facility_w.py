@@ -39,9 +39,9 @@ def to_excel(df):
     for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
         if col in df.columns:
             # تحويل النصوص إلى تواريخ باستخدام التنسيق المطلوب
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            # تحويل القيم إلى نصوص لتجنب تغيير التنسيق في Excel
-            df[col] = df[col].astype(str)
+            df[col] = pd.to_datetime(df[col], errors='coerce')  # تحويل القيم إلى datetime
+            df[col] = df[col].dt.date  # استخراج التاريخ فقط (تجاهل الوقت)
+            df[col] = df[col].astype(str)  # تحويل القيم إلى نصوص لتجنب تغيير التنسيق في Excel
 
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:

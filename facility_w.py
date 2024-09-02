@@ -41,8 +41,8 @@ def load_change_log():
     ])
 def to_excel(df):
     # تأكد من أن جميع الأعمدة التي تحتوي على تواريخ هي غير مزودة بمعلومات منطقة زمنية
-    for col in df.select_dtypes(include=['datetime']):
-        df[col] = df[col].apply(lambda x: x.replace(tzinfo=None) if x.tzinfo else x)
+    for col in df.select_dtypes(include=['datetime64[ns, UTC]', 'datetime64[ns]']):
+        df[col] = df[col].apply(lambda x: x.tz_localize(None) if x.tzinfo else x)
 
     # إنشاء تدفق بيانات في الذاكرة
     output = BytesIO()

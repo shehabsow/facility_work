@@ -40,9 +40,17 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
+    # تأكد من أن جميع الأعمدة التي تحتوي على تواريخ هي غير مزودة بمعلومات منطقة زمنية
+    for col in df.select_dtypes(include=['datetime']):
+        df[col] = df[col].apply(lambda x: x.replace(tzinfo=None) if x.tzinfo else x)
+
+    # إنشاء تدفق بيانات في الذاكرة
     output = BytesIO()
+
+    # استخدام ExcelWriter لكتابة DataFrame إلى التدفق
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
+    
     return output.getvalue()
 
 
@@ -225,7 +233,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime,
+                            'Date': datetime.now(egypt_tz),
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

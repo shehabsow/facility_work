@@ -225,7 +225,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime(),
+                            'Date': datetime,
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

@@ -233,7 +233,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime.now(egypt_tz),
+                            'Date': datetime.now(egypt_tz).replace(tzinfo=None),
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

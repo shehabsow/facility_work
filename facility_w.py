@@ -268,7 +268,7 @@ if page == 'Event Logging':
         st.download_button(
             label="Download Checklist as Excel",
             data=excel_data,
-            file_name='checklist_df.xlsx',
+            file_name='checklist_records.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 if page == 'Work Shop Order':
@@ -367,7 +367,7 @@ elif page == 'View Change Log':
     st.download_button(
         label="Download Checklist as Excel",
         data=excel_data,
-        file_name='log_df.xlsx',
+        file_name='change_log.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     

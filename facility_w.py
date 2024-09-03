@@ -17,7 +17,7 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 # تحميل البيانات مرة واحدة باستخدام التخزين المؤقت
 
 def load_checklist_data():
-    if os.path.exists('checklist_records.csv'):
+    if os.path.exists('checklist_records.xlsx'):
         df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:
@@ -30,7 +30,7 @@ def load_checklist_data():
     ])
 
 def load_change_log():
-    if os.path.exists('change_log.csv'):
+    if os.path.exists('change_log.xlsx'):
         return pd.read_excel('change_log.xlsx', engine='openpyxl')
     return pd.DataFrame(columns=[
         'event id', 'modifier name', 'modification Date', 

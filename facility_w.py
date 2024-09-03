@@ -189,7 +189,7 @@ if page == 'Event Logging':
                       'waste WTP & incinerator', 'Service Building & Garden Store','pumps & gas rooms']
         tabs1 = st.tabs(locations1)
 
-        for location, tab,location1,tab in zip(locations, tabs,locations1,tabs1):
+        for location, tab,location1,tab1 in zip(locations, tabs,locations1,tabs1):
             with tab:
                 st.subheader(f'{location} Checklist.')
                 

@@ -360,6 +360,7 @@ elif page == 'View Change Log':
     st.title('View Change Log')
 
     change_log = load_change_log()
+    st.write(change_log)
     excel_data = to_excel(st.session_state.log_df)
 
 # زر التنزيل لصيغة Excel

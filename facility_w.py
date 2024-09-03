@@ -18,7 +18,7 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 
 def load_checklist_data():
     if os.path.exists('checklist_records.csv'):
-        df = pd.read_excel('checklist_records.xlsx', encoding='xlsxwriter')
+        df = pd.read_excel('checklist_records.xlsx', encoding='openpyxl')
         # تحويل عمود التاريخ إلى datetime بدون منطقة زمنية (Naive)
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:

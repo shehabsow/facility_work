@@ -18,7 +18,7 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 
 def load_checklist_data():
     if os.path.exists('checklist_records.csv'):
-        df = pd.read_csv('checklist_records.csv', encoding='utf-8')
+        df = pd.read_excel('checklist_records.xlsx', encoding='utf-8')
         # تحويل عمود التاريخ إلى datetime بدون منطقة زمنية (Naive)
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:
@@ -34,7 +34,7 @@ def load_checklist_data():
 
 def load_change_log():
     if os.path.exists('change_log.csv'):
-        return pd.read_csv('change_log.csv', encoding='utf-8')
+        return pd.read_excel('change_log.xlsx', encoding='utf-8')
     return pd.DataFrame(columns=[
         'event id', 'modifier name', 'modification Date', 
         'modification type', 'new Date'
@@ -56,10 +56,10 @@ def to_excel(df):
 
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
-    df.to_csv('checklist_records.csv', index=False, encoding='utf-8')
+    df.to_excel('checklist_records.xlsx', index=False, encoding='utf-8')
 
 def save_change_log(df):
-    df.to_csv('change_log.csv', index=False, encoding='utf-8')
+    df.to_csv('change_log.xlsx', index=False, encoding='utf-8')
 
 # تهيئة بيانات الجلسة
 if 'checklist_df' not in st.session_state:

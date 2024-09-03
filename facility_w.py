@@ -363,12 +363,12 @@ elif page == 'View Change Log':
     excel_data = to_excel(st.session_state.log_df)
 
 # زر التنزيل لصيغة Excel
-        st.download_button(
-            label="Download Checklist as Excel",
-            data=excel_data,
-            file_name='log_df.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
+    st.download_button(
+        label="Download Checklist as Excel",
+        data=excel_data,
+        file_name='log_df.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
     
 
 elif page == 'Clear data':

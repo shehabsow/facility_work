@@ -181,9 +181,12 @@ if page == 'Event Logging':
 
     with col1:
         st.subheader('Select Area:')
-        locations = ['Admin', 'Quality', 'Utility', 'Processing', 'Blistering', 'Packaging', 'warehouse']
+        locations = ['Admin indoor', 'QC lab & Sampling room', 'proccessing','Receiving area & Reject room ',
+                     'technical corridor', 'Packaging', 'warehouse']
         tabs = st.tabs(locations)
-        locations1 = ['Admin', 'Quality', 'Utility', 'Processing', 'Blistering', 'Packaging', 'warehouse']
+        
+        locations1 = ['Utilities & Area Surround', 'Outdoor & security gats ', 'Electric rooms', 
+                      'waste WTP & incinerator', 'Service Building & Garden Store','pumps & gas rooms']
         tabs1 = st.tabs(locations)
 
         for location, tab,location1,tab in zip(locations, tabs,locations1,tabs1):

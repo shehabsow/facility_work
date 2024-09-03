@@ -186,7 +186,7 @@ if page == 'Event Logging':
         locations1 = ['Admin', 'Quality', 'Utility', 'Processing', 'Blistering', 'Packaging', 'warehouse']
         tabs1 = st.tabs(locations)
 
-        for location, tab in zip(locations, tabs,locations1,tabs1):
+        for location, tab,location1,tab in zip(locations, tabs,locations1,tabs1):
             with tab:
                 st.subheader(f'{location} Checklist.')
                 

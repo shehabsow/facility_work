@@ -376,7 +376,7 @@ elif page == 'Clear data':
             'Date', 'Rating', 'responsible person', 
             'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'
         ])
-        st.session_state.checklist_df.to_excel('checklist_records.csv', index=False)
+        st.session_state.checklist_df.to_excel('checklist_records.xlsx', index=False)
         st.success('Checklist data cleared!')
 
     if st.button('Clear Log Data'):
@@ -384,5 +384,5 @@ elif page == 'Clear data':
             'event id', 'modifier name', 'modification Date', 
             'modification type', 'new Date'
         ])
-        st.session_state.log_df.to_excel('change_log.csv', index=False)
+        st.session_state.log_df.to_excel('change_log.xlsx', index=False)
         st.success('Log data cleared!')

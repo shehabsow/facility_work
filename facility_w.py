@@ -17,7 +17,7 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 # تحميل البيانات مرة واحدة باستخدام التخزين المؤقت
 
 def load_checklist_data():
-    if os.path.exists('checklist_records.csv'):
+    if os.path.exists('checklist_records.xlsx'):
         df = pd.read_excel('checklist_records.xlsx', engine='xlsxwriter')
         # تحويل عمود التاريخ إلى datetime بدون منطقة زمنية (Naive)
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
@@ -33,7 +33,7 @@ def load_checklist_data():
 # تحميل سجل التغيير مرة واحدة باستخدام التخزين المؤقت
 
 def load_change_log():
-    if os.path.exists('change_log.csv'):
+    if os.path.exists('change_log.xlsx'):
         return pd.read_excel('change_log.xlsx', engine='xlsxwriter')
     return pd.DataFrame(columns=[
         'event id', 'modifier name', 'modification Date', 

@@ -181,21 +181,13 @@ if page == 'Event Logging':
 
     with col1:
         st.subheader('Select Area:')
-        locations_top = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
-                 'Technical corridor', 'Packaging', 'Warehouse']
-        locations_bottom = ['Utilities & Area Surround', 'Outdoor & security gates', 'Electric rooms',
-                            'Waste WTP & Incinerator', 'Service Building & Garden Store', 'Pumps & Gas Rooms']
-        
-        # عرض التبويبات على صطرين
-        with st.container():
-            col1, col2 = st.columns(2)
-            with col1:
-                tabs_top = st.tabs(locations_top)
-            with col2:
-                tabs_bottom = st.tabs(locations_bottom)
-        
-        # قائمة للمواقع المحددة لاختيارها
-        selected_location = st.selectbox("Select Location", locations_top + locations_bottom)
+        locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
+             'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
+             'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
+             'Service Building & Garden Store', 'Pumps & Gas Rooms']
+
+# عرض قائمة منسدلة لاختيار الموقع
+        selected_location = st.selectbox("Select Location", locations)
         
         if selected_location:
             st.subheader(f'{selected_location} Checklist.')
@@ -253,6 +245,8 @@ if page == 'Event Logging':
                     st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
                     st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
                     st.success(f"Event recorded successfully! '{category}'!")
+        
+                    
 
     with col2:
         st.markdown("""

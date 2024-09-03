@@ -18,7 +18,7 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 
 def load_checklist_data():
     if os.path.exists('checklist_records.csv'):
-        pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
+        df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.tz_localize(None)

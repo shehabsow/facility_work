@@ -31,7 +31,7 @@ def load_checklist_data():
 
 def load_change_log():
     if os.path.exists('change_log.csv'):
-        return pd.read_csv('change_log.csv', encoding='utf-8')
+        return pd.read_excel('change_log.xlsx', engine='openpyxl')
     return pd.DataFrame(columns=[
         'event id', 'modifier name', 'modification Date', 
         'modification type', 'new Date'
@@ -53,11 +53,10 @@ def to_excel(df):
 
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
-    df.to_excel('checklist_records.xlsx', index=False, engine='xlsxwriter')
+    df.to_excel('checklist_records.xlsx', index=False, encoding='utf-8', engine='openpyxl')
 
 def save_change_log(df):
-    df.to_excel('change_log.xlsx', index=False, engine='xlsxwriter')
-
+    df.to_excel('change_log.xlsx', index=False, encoding='utf-8', engine='openpyxl')
 # تهيئة بيانات الجلسة
 if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()

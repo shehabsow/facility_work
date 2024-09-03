@@ -183,16 +183,16 @@ if page == 'Event Logging':
         st.subheader('Select Area:')
         locations = [
     'Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area and Reject room',
-    'Packaging & secondary primary', 'Warehouse', 'Utilities & Area Surround',
-    'Outdoor & security gates', 'Electric rooms', 'waste WTP & incinerator',
-    'Service Building & Garden Store', 'pumps & gas rooms', 'Production technical corridor'
+    'Packaging & secondary primary', 'Warehouse', 'Utilities & Area Surround', 'Outdoor & security gates',
+    'Electric rooms', 'Waste WTP & incinerator', 'Service Building & Garden Store', 'Pumps & gas rooms',
+    'Production technical corridor'
 ]
 
 # تقسيم المواقع إلى صفين
         locations_row1 = locations[:7]
         locations_row2 = locations[7:]
         
-        # إنشاء صفين من التبويبات
+        # إنشاء تبويبين في صفين
         col1, col2 = st.columns(2)
         
         with col1:
@@ -204,31 +204,40 @@ if page == 'Event Logging':
         # الجمع بين التبويبات لسهولة الاستخدام
         all_tabs = tabs_row1 + tabs_row2
         
+        # بيانات التحقق إذا لم تكن موجودة في جلسة Streamlit
+        if 'checklist_df' not in st.session_state:
+            st.session_state.checklist_df = pd.DataFrame(columns=[
+                'event id', 'location', 'Element', 'Event Detector Name', 'Date',
+                'Rating', 'comment', 'responsible person', 'Expected repair Date',
+                'Actual Repair Date', 'image path'
+            ])
+        
         # إضافة المحتوى داخل كل تبويب باستخدام حلقة
         for location, tab in zip(locations, all_tabs):
             with tab:
                 st.subheader(f'{location} Checklist.')
         
-                # هنا يتم إدخال المحتوى الذي تريد إضافته لكل تبويب
-                # على سبيل المثال، يمكنك عرض النموذج الخاص بكل موقع
                 for category, items in checklist_items.items():
                     st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)
                     for item in items:
                         st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
         
-                    # نموذج الفورم الخاص بكل تبويب
+                    # إنشاء الأعمدة لعرض النماذج
                     col1a, col2a, col3a, col4a = st.columns([1, 2, 2, 2])
+        
+                    # المدخلات الخاصة بالنموذج
                     Event_Detector_Name = col2a.text_input('Detector Name.', key=f"detector_name_{category}_{location}")
                     Rating = col1a.selectbox('Rating.', [0, 1, 2, 3, 'N/A'], key=f"Rating_{category}_{location}")
-                    comment = col3a.text_input('comment.', '', key=f"comment_{category}_{location}")
+                    comment = col3a.text_input('Comment.', '', key=f"comment_{category}_{location}")
                     responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{location}")
                     uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{location}")
+        
                     if st.button(f'Add {category}', key=f"add_{category}_{location}"):
                         # تعيين رقم الحدث بناءً على التقييم
                         if Rating in [0, 'N/A']:
-                            event_id = 'check'
+                            event_id = 'check'  # عدم تعيين رقم للحدث
                         else:
-                            event_id = get_next_event_id()
+                            event_id = get_next_event_id()  # تعيين رقم للحدث
         
                         image_path = ""
                         if uploaded_file is not None:
@@ -251,7 +260,7 @@ if page == 'Event Logging':
                             'location': location,
                             'Element': category,
                             'Event Detector Name': Event_Detector_Name,
-                            'Date': datetime.now().replace(tzinfo=None),
+                            'Date': datetime.now(egypt_tz).replace(tzinfo=None),
                             'Rating': Rating,
                             'comment': comment,
                             'responsible person': responsible_person,

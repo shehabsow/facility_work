@@ -187,7 +187,7 @@ if page == 'Event Logging':
         
         locations1 = ['Utilities & Area Surround', 'Outdoor & security gats ', 'Electric rooms', 
                       'waste WTP & incinerator', 'Service Building & Garden Store','pumps & gas rooms']
-        tabs1 = st.tabs(locations)
+        tabs1 = st.tabs(locations1)
 
         for location, tab,location1,tab in zip(locations, tabs,locations1,tabs1):
             with tab:

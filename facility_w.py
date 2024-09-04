@@ -60,8 +60,12 @@ def save_checklist_data(df):
         st.error(f"An error occurred while saving the data: {str(e)}")
 
 def save_change_log(df):
-    df.to_excel('change_log.xlsx', index=False, encoding='utf-8', engine='openpyxl')
-# تهيئة بيانات الجلسة
+    try:
+        df.to_excel('change_log.xlsx', index=False, engine='openpyxl')
+        st.success("Data saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving the data: {str(e)}")
+    
 if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()
 

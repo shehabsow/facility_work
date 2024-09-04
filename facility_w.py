@@ -180,14 +180,14 @@ if page == 'Event Logging':
     col1, col2 = st.columns([1, 4])
     
     with col1:
-        st.subheader('Select Area:')
+        st.markdown(f"<h3 style='color:green; font-size:24px;'>Select Location:</h3>", unsafe_allow_html=True)
         locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
                      'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
                      'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
                      'Service Building & Garden Store', 'Pumps & Gas Rooms']
     
         # عرض قائمة منسدلة لاختيار الموقع
-        selected_location = st.selectbox(locations)
+        selected_location = st.selectbox('Choose form these areas',locations)
     
         if selected_location:
             st.subheader(f'You selected: {selected_location}')

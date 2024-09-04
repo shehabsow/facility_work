@@ -219,7 +219,7 @@ if page == 'Event Logging':
         </h2>
         """, unsafe_allow_html=True)
                 risk = st.checkbox('checkbox',key='high_risk_checkbox')
-            if st.button(f'Add {category}', key=f"add_{category}_{index}_{selected_location}"):
+            if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'
                 else:

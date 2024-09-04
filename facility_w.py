@@ -180,7 +180,7 @@ if page == 'Event Logging':
     col1, col2 = st.columns([1, 6])
     
     with col1:
-        st.markdown(f"<h3 style='color:green; font-size:30px;'>Select Location:</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:black; font-size:30px;'>Select Location:</h3>", unsafe_allow_html=True)
         locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
                      'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
                      'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',

@@ -177,7 +177,7 @@ if page == 'Event Logging':
     image_save_path = 'uploaded_images'
     os.makedirs(image_save_path, exist_ok=True)
     
-    col1, col2 = st.columns([1, 0.5])
+    col1, col2 = st.columns([1, 3])
     
     with col1:
         st.subheader('Select Area:')

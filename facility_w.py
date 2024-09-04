@@ -248,6 +248,11 @@ if page == 'Event Logging':
                     'Actual Repair Date': '',
                     'image path': image_path
                 }
+
+                if Rating in [1, 2, 3]:
+        # استخدام checkbox لإدخال بيانات الخطر
+                    risk = st.checkbox('Is this a high risk?')
+                    new_row['High Risk'] = 'Yes' if risk else 'No'
     
                 new_row_df = pd.DataFrame([new_row])
                 st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)

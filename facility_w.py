@@ -177,7 +177,7 @@ if page == 'Event Logging':
     image_save_path = 'uploaded_images'
     os.makedirs(image_save_path, exist_ok=True)
     
-    col1, col2 = st.columns([1, 4])
+    col1, col2 = st.columns([1, 6])
     
     with col1:
         st.markdown(f"<h3 style='color:green; font-size:30px;'>Select Location:</h3>", unsafe_allow_html=True)

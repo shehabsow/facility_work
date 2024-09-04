@@ -214,65 +214,57 @@ if page == 'Event Logging':
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             if Rating in [1, 2, 3]:
                 st.markdown("""
-<h2 style="font-size: 25px; color: red;">
-    Is this a high risk?
-</h2>
-""", unsafe_allow_html=True)
-                risk = st.checkbox('checkbox',key=f'high_risk_checkbox_{category}_{selected_location}')
+                <h2 style="font-size: 25px; color: red;">
+                    Is this a high risk?
+                </h2>
+                """, unsafe_allow_html=True)
+                risk = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')
+            else:
+                risk = None
+    
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
-                if Rating in [1, 2, 3]:
-                    st.markdown("""
-                    <h2 style="font-size: 25px; color: red;">
-                        Is this a high risk?
-                    </h2>
-                    """, unsafe_allow_html=True)
-                    risk = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')
+                if Rating in [0, 'N/A']:
+                    event_id = 'check'
+                    risk_value = ''  # No risk for these ratings
                 else:
-                    risk = None
-        
-                if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
-                    if Rating in [0, 'N/A']:
-                        event_id = 'check'
-                        risk_value = ''  # No risk for these ratings
-                    else:
-                        event_id = get_next_event_id()
-                        risk_value = 'Yes' if risk else 'No'
-        
-                    image_path = ""
-                    if uploaded_file is not None:
-                        try:
-                            image = Image.open(uploaded_file)
-                            if image.mode == "RGBA":
-                                image = image.convert("RGB")
-                            max_size = (800, 600)
-                            image.thumbnail(max_size)
-                            image_filename = os.path.join('uploaded_images', f"{event_id}.jpg")
-                            image.save(image_filename, optimize=True, quality=85)
-                            image_path = image_filename
-                            st.success(f"Image saved successfully as {uploaded_file.name}")
-                        except Exception as e:
-                            st.error(f"An error occurred while saving the image: {str(e)}")
-                            image_path = ""
-        
-                    new_row = {
-                        'event id': event_id,
-                        'location': selected_location,
-                        'Element': category,
-                        'Event Detector Name': Event_Detector_Name,
-                        'Date': datetime.now(egypt_tz).replace(tzinfo=None),
-                        'Rating': Rating,
-                        'comment': comment,
-                        'responsible person': responsible_person,
-                        'Expected repair Date': '',
-                        'Actual Repair Date': '',
-                        'image path': image_path,
-                        'High Risk': risk_value
-                    }
-        
-                    new_row_df = pd.DataFrame([new_row])
-                    st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
-                    st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
-                    st.success(f"Event recorded successfully! '{category}'!")
+                    event_id = get_next_event_id()
+                    risk_value = 'Yes' if risk else 'No'
+    
+                image_path = ""
+                if uploaded_file is not None:
+                    try:
+                        image = Image.open(uploaded_file)
+                        if image.mode == "RGBA":
+                            image = image.convert("RGB")
+                        max_size = (800, 600)
+                        image.thumbnail(max_size)
+                        image_filename = os.path.join('uploaded_images', f"{event_id}.jpg")
+                        image.save(image_filename, optimize=True, quality=85)
+                        image_path = image_filename
+                        st.success(f"Image saved successfully as {uploaded_file.name}")
+                    except Exception as e:
+                        st.error(f"An error occurred while saving the image: {str(e)}")
+                        image_path = ""
+    
+                new_row = {
+                    'event id': event_id,
+                    'location': selected_location,
+                    'Element': category,
+                    'Event Detector Name': Event_Detector_Name,
+                    'Date': datetime.now(egypt_tz).replace(tzinfo=None),
+                    'Rating': Rating,
+                    'comment': comment,
+                    'responsible person': responsible_person,
+                    'Expected repair Date': '',
+                    'Actual Repair Date': '',
+                    'image path': image_path,
+                    'High Risk': risk_value
+                }
+    
+                new_row_df = pd.DataFrame([new_row])
+                st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
+                st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
+                st.success(f"Event recorded successfully! '{category}'!")
 
                     
 

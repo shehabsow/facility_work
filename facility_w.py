@@ -188,24 +188,23 @@ if page == 'Event Logging':
     """, unsafe_allow_html=True)
 
     with col1:
-        with st.container():
-            st.subheader('Select Area:')
-            locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
-                 'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
-                 'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
-                 'Service Building & Garden Store', 'Pumps & Gas Rooms']
+        st.subheader('Select Area:')
+        locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
+             'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
+             'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
+             'Service Building & Garden Store', 'Pumps & Gas Rooms']
+
+# عرض قائمة منسدلة لاختيار الموقع
+        selected_location = st.selectbox("Select Location", locations)
+        
+        if selected_location:
+            st.subheader(f'{selected_location} Checklist.')
     
-    # عرض قائمة منسدلة لاختيار الموقع
-            selected_location = st.selectbox("Select Location", locations)
-            
-            if selected_location:
-                st.subheader(f'{selected_location} Checklist.')
-        
-            for category, items in checklist_items.items():
-                st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)
-        
-                for item in items:
-                    st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
+        for category, items in checklist_items.items():
+            st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)
+    
+            for item in items:
+                st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
         
                 col1a, col2a, col3a, col4a = st.columns([1, 2, 2, 2])
                 Event_Detector_Name = col2a.text_input('Detector Name.', key=f"detector_name_{category}_{selected_location}")

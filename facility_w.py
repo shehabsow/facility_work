@@ -180,17 +180,28 @@ if page == 'Event Logging':
     col1, col2 = st.columns([1, 4])
     
     with col1:
-        st.subheader('Select Area:')
-        locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
-             'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
-             'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
-             'Service Building & Garden Store', 'Pumps & Gas Rooms']
+        st.markdown("""
+    <style>
+    label[data-baseweb="select"] {
+        font-size: 16px;  /* تغيير حجم الخط */
+        color: #007BFF;   /* يمكنك أيضاً تغيير لون الخط إذا رغبت */
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# عرض قائمة منسدلة لاختيار الموقع
-        selected_location = st.selectbox("Select Location", locations)
+# كود Streamlit لتحديد الموقع
+        with st.container():
+            st.subheader('Select Area:')
+            locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
+                         'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
+                         'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
+                         'Service Building & Garden Store', 'Pumps & Gas Rooms']
         
-        if selected_location:
-            st.subheader(f'{selected_location} Checklist.')
+            # عرض قائمة منسدلة لاختيار الموقع
+            selected_location = st.selectbox("Select Location", locations)
+        
+            if selected_location:
+                st.write(f'You selected: {selected_location}')
 
     col1, col2 = st.columns([3,3])
 

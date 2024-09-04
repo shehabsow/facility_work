@@ -188,17 +188,18 @@ if page == 'Event Logging':
     """, unsafe_allow_html=True)
 
     with col1:
-        st.subheader('Select Area:')
-        locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
-             'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
-             'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
-             'Service Building & Garden Store', 'Pumps & Gas Rooms']
-
-# عرض قائمة منسدلة لاختيار الموقع
-        selected_location = st.selectbox("Select Location", locations)
-        
-        if selected_location:
-            st.subheader(f'{selected_location} Checklist.')
+        with st.container():
+            st.subheader('Select Area:')
+            locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
+                 'Technical corridor', 'Packaging', 'Warehouse', 'Utilities & Area Surround',
+                 'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
+                 'Service Building & Garden Store', 'Pumps & Gas Rooms']
+    
+    # عرض قائمة منسدلة لاختيار الموقع
+            selected_location = st.selectbox("Select Location", locations)
+            
+            if selected_location:
+                st.subheader(f'{selected_location} Checklist.')
         
             for category, items in checklist_items.items():
                 st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)

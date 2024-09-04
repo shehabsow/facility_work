@@ -213,7 +213,16 @@ if page == 'Event Logging':
             responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             if Rating in [1, 2, 3]:
-                risk = st.checkbox('Is this a high risk?')
+                st.markdown("""
+                <style>
+                .checkbox-label {
+                    font-size: 24px; /* حجم الخط */
+                    color: #007BFF; /* لون الخط */
+                    font-weight: bold; /* نوع الخط: سميك */
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                risk = st.checkbox('<span class="checkbox-label">Is this a high risk?</span>', unsafe_allow_html=True)
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'

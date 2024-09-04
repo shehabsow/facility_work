@@ -142,7 +142,7 @@ page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'Vie
 
 if page == 'Event Logging':
     checklist_df = load_checklist_data()
-    col1, col2 = st.columns([2, 0.75])
+    col1, col2 = st.columns([2, 0.5])
     with col1:
         st.markdown("""
                 <h2 style='text-align: center; font-size: 40px; color: #A52A2A;'>
@@ -177,7 +177,7 @@ if page == 'Event Logging':
     image_save_path = 'uploaded_images'
     os.makedirs(image_save_path, exist_ok=True)
     
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([0.5, 1])
     
     with col1:
         st.subheader('Select Area:')
@@ -192,7 +192,7 @@ if page == 'Event Logging':
         if selected_location:
             st.subheader(f'{selected_location} Checklist.')
 
-    col1, col2 = st.columns([3, 3])
+    col1, col2 = st.columns([3,2.5])
 
     with col1:
 

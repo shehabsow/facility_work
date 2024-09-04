@@ -53,7 +53,11 @@ def to_excel(df):
 
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
-    df.to_excel('checklist_records.xlsx', index=False, encoding='utf-8', engine='openpyxl')
+    try:
+        df.to_excel('checklist_records.xlsx', index=False, engine='openpyxl')
+        st.success("Data saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving the data: {str(e)}")
 
 def save_change_log(df):
     df.to_excel('change_log.xlsx', index=False, encoding='utf-8', engine='openpyxl')

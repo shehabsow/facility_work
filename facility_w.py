@@ -220,7 +220,9 @@ if page == 'Event Logging':
     }
 </style>
 """, unsafe_allow_html=True)
-                risk = st.checkbox('<span class="checkbox-label">Is this a high risk?</span>', unsafe_allow_html=True)
+
+# إنشاء مربع اختيار مع تخصيص الحجم
+            risk = st.checkbox('<span class="checkbox-label">Is this a high risk?</span>', unsafe_allow_html=True)
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'

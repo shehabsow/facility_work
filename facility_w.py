@@ -190,11 +190,9 @@ if page == 'Event Logging':
         selected_location = st.selectbox('Choose form these areas',locations)
     
     if selected_location:
-        st.markdown(f'<p style="font-size: 25px;"> <span style="color: #A52A2A;">You selected:</span> {selected_location}</p>', unsafe_allow_html=True)
         st.markdown(
-        f'<p style="font-size: 20px; color: black;">You selected: <span style="color: blue;">{selected_location}</span></p>', 
-        unsafe_allow_html=True
-    )
+        f'<p style="font-size: 20px; color: #A52A2A;">You selected: <span style="color: blue;">{selected_location}</span></p>', 
+        unsafe_allow_html=True)
 
     col1, col2 = st.columns([3,3])
 

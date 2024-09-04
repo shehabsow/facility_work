@@ -247,7 +247,8 @@ if page == 'Event Logging':
                     'responsible person': responsible_person,
                     'Expected repair Date': '',
                     'Actual Repair Date': '',
-                    'image path': image_path
+                    'image path': image_path,
+                    'High Risk': 'Yes' if risk else 'No'
                 }
 
                 new_row_df = pd.DataFrame([new_row])

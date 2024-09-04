@@ -189,8 +189,8 @@ if page == 'Event Logging':
         # عرض قائمة منسدلة لاختيار الموقع
         selected_location = st.selectbox('Choose form these areas',locations)
     
-        if selected_location:
-            st.subheader(f'You selected: {selected_location}')
+    if selected_location:
+        st.subheader(f'You selected: {selected_location}')
 
     col1, col2 = st.columns([3,3])
 

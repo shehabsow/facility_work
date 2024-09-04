@@ -191,7 +191,7 @@ if page == 'Event Logging':
     
         if selected_location:
             st.markdown(
-            f'<p style="font-size: 25px; color: green;">You selected: <span style="font-size: 28px; color: #A52A2A;">{selected_location}</span></p>'
+            f'<p style="font-size: 25px; color: green;">You selected: <span style="font-size: 25px; color: #A52A2A;">{selected_location}</span></p>'
             '<hr style="border: 1px solid #4169E1;"/>', 
             unsafe_allow_html=True
         )

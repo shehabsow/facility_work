@@ -214,7 +214,7 @@ if page == 'Event Logging':
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             if Rating in [1, 2, 3]:
                 st.markdown("""
-                <h2 style='text-align: center; font-size: 25px; color: red'>
+                <h2 style= font-size: 25px; color: red'>
                     Is this a high risk?
                 </h2>
                 """, unsafe_allow_html=True)

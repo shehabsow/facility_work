@@ -177,16 +177,8 @@ if page == 'Event Logging':
     image_save_path = 'uploaded_images'
     os.makedirs(image_save_path, exist_ok=True)
     
-    col1, col2 = st.columns([1, 1])
-    st.markdown("""
-    <style>
-    div[role="combobox"] > div:nth-child(1) {
-        max-width: 30px;  /* التحكم في عرض المربع */
-        font-size: 14px;   /* التحكم في حجم الخط */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
+    col1, col2 = st.columns([1, 3])
+    
     with col1:
         st.subheader('Select Area:')
         locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
@@ -199,7 +191,11 @@ if page == 'Event Logging':
         
         if selected_location:
             st.subheader(f'{selected_location} Checklist.')
-    
+
+    col1, col2 = st.columns([3, 3])
+
+    with col1:
+
         for category, items in checklist_items.items():
             st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)
     
@@ -253,7 +249,7 @@ if page == 'Event Logging':
                 st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
                 st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
                 st.success(f"Event recorded successfully! '{category}'!")
-    
+
                     
 
     with col2:

@@ -183,7 +183,7 @@ if page == 'Event Logging':
         st.markdown("""
     <style>
     label[data-baseweb="select"] {
-        font-size: 16px;  /* تغيير حجم الخط */
+        font-size: 25px;  /* تغيير حجم الخط */
         color: #007BFF;   /* يمكنك أيضاً تغيير لون الخط إذا رغبت */
     }
     </style>

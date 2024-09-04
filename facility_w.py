@@ -189,12 +189,12 @@ if page == 'Event Logging':
         # عرض قائمة منسدلة لاختيار الموقع
         selected_location = st.selectbox('Choose form these areas',locations)
     
-    if selected_location:
-        st.markdown(
-        f'<p style="font-size: 25px; color: green;">You selected: <span style="font-size: 28px; color: #A52A2A;">{selected_location}</span></p>'
-        '<hr style="border: 1px solid #4169E1;"/>', 
-        unsafe_allow_html=True
-    )
+        if selected_location:
+            st.markdown(
+            f'<p style="font-size: 25px; color: green;">You selected: <span style="font-size: 28px; color: #A52A2A;">{selected_location}</span></p>'
+            '<hr style="border: 1px solid #4169E1;"/>', 
+            unsafe_allow_html=True
+        )
 
     col1, col2 = st.columns([3,3])
 

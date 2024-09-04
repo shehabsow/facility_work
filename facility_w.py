@@ -212,7 +212,8 @@ if page == 'Event Logging':
             comment = col3a.text_input('Comment.', '', key=f"comment_{category}_{selected_location}")
             responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
-            
+            if Rating in [1, 2, 3]:
+                risk = st.checkbox('Is this a high risk?')
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'
@@ -249,11 +250,6 @@ if page == 'Event Logging':
                     'image path': image_path
                 }
 
-                if Rating in [1, 2, 3]:
-        # استخدام checkbox لإدخال بيانات الخطر
-                    risk = st.checkbox('Is this a high risk?')
-                    new_row['High Risk'] = 'Yes' if risk else 'No'
-    
                 new_row_df = pd.DataFrame([new_row])
                 st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
                 st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)

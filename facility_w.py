@@ -214,14 +214,12 @@ if page == 'Event Logging':
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             if Rating in [1, 2, 3]:
                 st.markdown("""
-                <style>
-                .checkbox-label {
-                    font-size: 24px; /* حجم الخط */
-                    color: #007BFF; /* لون الخط */
-                    font-weight: bold; /* نوع الخط: سميك */
-                }
-                </style>
-                """, unsafe_allow_html=True)
+<style>
+    .checkbox-label {
+        font-size: 20px; /* حجم الخط أكبر */
+    }
+</style>
+""", unsafe_allow_html=True)
                 risk = st.checkbox('<span class="checkbox-label">Is this a high risk?</span>', unsafe_allow_html=True)
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:

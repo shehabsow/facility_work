@@ -149,7 +149,8 @@ if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()
 
 if 'log_df' not in st.session_state:
-    st.session_state.log_df = load_change_log()# الصفحة الرئيسية لتسجيل الأحداث
+    st.session_state.log_df = load_change_log()
+    
 page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'View Change Log', 'Clear data'])
 
 if page == 'Event Logging':

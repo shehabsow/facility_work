@@ -137,7 +137,11 @@ def get_next_event_id():
     next_num = last_num + 1
     return f'Work Order {next_num}'
 
-# الصفحة الرئيسية لتسجيل الأحداث
+if 'checklist_df' not in st.session_state:
+    st.session_state.checklist_df = load_checklist_data()
+
+if 'log_df' not in st.session_state:
+    st.session_state.log_df = load_change_log()# الصفحة الرئيسية لتسجيل الأحداث
 page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'View Change Log', 'Clear data'])
 
 if page == 'Event Logging':
@@ -263,7 +267,7 @@ if page == 'Event Logging':
     
                 new_row_df = pd.DataFrame([new_row])
                 st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
-                st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
+                save_checklist_data(st.session_state.checklist_df)  # استخدام الدالة لحفظ البيانات
                 st.success(f"Event recorded successfully! '{category}'!")
 
                     
@@ -354,7 +358,9 @@ if page == 'Work Shop Order':
                             }
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
-                            st.session_state.log_df.to_csv('change_log.csv', index=False)
+                            save_change_log(st.session_state.log_df)  # استخدام الدالة لحفظ البيانات
+                            
+                            
             else:
                 st.warning("No events found for the selected person(s).")
         else:

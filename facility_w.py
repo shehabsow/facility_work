@@ -213,6 +213,11 @@ if page == 'Event Logging':
             responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             if Rating in [1, 2, 3]:
+                st.markdown("""
+                <h2 style='text-align: center; font-size: 25px; color: red'>
+                    Is this a high risk?
+                </h2>
+                """, unsafe_allow_html=True)
                 risk = st.checkbox('')
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:

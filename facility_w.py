@@ -178,6 +178,14 @@ if page == 'Event Logging':
     os.makedirs(image_save_path, exist_ok=True)
     
     col1, col2 = st.columns([1, 1])
+    st.markdown("""
+    <style>
+    div[role="combobox"] > div:nth-child(1) {
+        max-width: 30px;  /* التحكم في عرض المربع */
+        font-size: 14px;   /* التحكم في حجم الخط */
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
     with col1:
         st.subheader('Select Area:')

@@ -128,13 +128,12 @@ def get_next_event_id():
     # تحميل البيانات المخزنة من ملف Excel أو DataFrame فارغ إذا لم يكن الملف موجوداً
     if os.path.exists('checklist_records.xlsx'):
         df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
-        event_ids = df['event id'].dropna().tolist()
-
-        if event_ids:
-            try:
-                last_id = event_ids[-1]  # استخراج آخر رقم حدث
-                last_num = int(last_id.split(' ')[-1])  # استخراج الرقم من النص
-            except (ValueError, IndexError):
+        if not df.empty:
+            # استخراج الأرقام فقط من عمود 'event id' وتجاهل أي قيم فارغة
+            event_ids = df['event id'].dropna().apply(lambda x: int(x.split(' ')[-1]) if x.startswith('Work Order ') else None)
+            if not event_ids.empty:
+                last_num = event_ids.max()  # استخدم أكبر رقم حدث
+            else:
                 last_num = 0
         else:
             last_num = 0
@@ -143,7 +142,6 @@ def get_next_event_id():
 
     next_num = last_num + 1
     return f'Work Order {next_num}'
-
 if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()
 

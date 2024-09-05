@@ -128,11 +128,19 @@ def get_next_event_id():
     # تحميل البيانات المخزنة من ملف Excel أو DataFrame فارغ إذا لم يكن الملف موجوداً
     if os.path.exists('checklist_records.xlsx'):
         df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
-        if not df.empty:
+        
+        if 'event id' in df.columns and not df.empty:
             # استخراج الأرقام فقط من عمود 'event id' وتجاهل أي قيم غير متوافقة
-            event_ids = df['event id'].dropna().apply(
-                lambda x: int(x.split(' ')[-1]) if isinstance(x, str) and x.startswith('Work Order ') else None
-            )
+            def extract_event_number(x):
+                if isinstance(x, str) and x.startswith('Work Order '):
+                    try:
+                        return int(x.split(' ')[-1])
+                    except (ValueError, IndexError):
+                        return None
+                return None
+            
+            event_ids = df['event id'].dropna().apply(extract_event_number)
+            
             # إسقاط القيم الفارغة بعد المعالجة
             event_ids = event_ids.dropna()
 

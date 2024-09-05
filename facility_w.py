@@ -74,7 +74,7 @@ def save_change_log(df):
         st.error(f"An error occurred while saving the data: {str(e)}")
     
 if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = load_checklist_data()
+    st.session_state.check_df = load_checklist_data()
 
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
@@ -132,10 +132,10 @@ repair_personnel = ['Shehab Ayman', 'sameh', 'Kaleed', 'Yasser Hassan', 'Mohamed
 
 # دالة لتوليد رقم الحدث التالي
 def get_next_event_id():
-    if st.session_state.checklist_df.empty or 'event id' not in st.session_state.checklist_df.columns:
+    if st.session_state.check_df.empty or 'event id' not in st.session_state.check_df.columns:
         return 'Work Order 1'
 
-    event_ids = st.session_state.checklist_df['event id'].dropna().tolist()
+    event_ids = st.session_state.check_df['event id'].dropna().tolist()
 
     if not event_ids:
         return 'Work Order 1'
@@ -151,8 +151,8 @@ def get_next_event_id():
 
     next_num = last_num + 1
     return f'Work Order {next_num}'
-if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = load_checklist_data()
+if 'check_df' not in st.session_state:
+    st.session_state.check_df = load_checklist_data()
 
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()

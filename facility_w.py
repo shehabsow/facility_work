@@ -52,12 +52,19 @@ def to_excel(df):
 
 
 # حفظ البيانات في ملف CSV بشكل غير متزامن
-def save_checklist_data(df):
+def save_check_data(check_df):
     try:
-        df.to_excel('checklist_records.xlsx', index=False, engine='openpyxl')
-        st.success("Data saved successfully!")
+        check_df.to_excel('check_records.xlsx', index=False, engine='openpyxl')
+        st.success("Check data saved successfully!")
     except Exception as e:
-        st.error(f"An error occurred while saving the data: {str(e)}")
+        st.error(f"An error occurred while saving check data: {str(e)}")
+
+def save_work_order_data(work_order_df):
+    try:
+        work_order_df.to_excel('work_order_records.xlsx', index=False, engine='openpyxl')
+        st.success("Work Order data saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving Work Order data: {str(e)}")
 
 def save_change_log(df):
     try:
@@ -235,48 +242,37 @@ if page == 'Event Logging':
                 risk = None
     
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
-                if Rating in [0, 'N/A']:
+                if Rating in [0, 'N/A']:  # This is a "Check" event
                     event_id = 'check'
-                    risk_value = ''  # No risk for these ratings
-                else:
+                    new_check_row = {
+                        'event id': event_id,
+                        'location': selected_location,
+                        'Element': category,
+                        'Event Detector Name': Event_Detector_Name,
+                        'Date': datetime.now(egypt_tz).replace(tzinfo=None)
+                    }
+                    new_check_df = pd.DataFrame([new_check_row])
+                    st.session_state.check_df = pd.concat([st.session_state.check_df, new_check_df], ignore_index=True)
+                    save_check_data(st.session_state.check_df)
+            
+                else:  # This is a "Work Order" event
                     event_id = get_next_event_id()
-                    risk_value = 'Yes' if risk else 'No'
-    
-                image_path = ""
-                if uploaded_file is not None:
-                    try:
-                        image = Image.open(uploaded_file)
-                        if image.mode == "RGBA":
-                            image = image.convert("RGB")
-                        max_size = (800, 600)
-                        image.thumbnail(max_size)
-                        image_filename = os.path.join('uploaded_images', f"{event_id}.jpg")
-                        image.save(image_filename, optimize=True, quality=85)
-                        image_path = image_filename
-                        st.success(f"Image saved successfully as {uploaded_file.name}")
-                    except Exception as e:
-                        st.error(f"An error occurred while saving the image: {str(e)}")
-                        image_path = ""
-    
-                new_row = {
-                    'event id': event_id,
-                    'location': selected_location,
-                    'Element': category,
-                    'Event Detector Name': Event_Detector_Name,
-                    'Date': datetime.now(egypt_tz).replace(tzinfo=None),
-                    'Rating': Rating,
-                    'comment': comment,
-                    'responsible person': responsible_person,
-                    'Expected repair Date': '',
-                    'Actual Repair Date': '',
-                    'image path': image_path,
-                    'High Risk': risk_value
-                }
-    
-                new_row_df = pd.DataFrame([new_row])
-                st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
-                save_checklist_data(st.session_state.checklist_df)  # استخدام الدالة لحفظ البيانات
-                st.success(f"Event recorded successfully! '{category}'!")
+                    new_work_order_row = {
+                        'event id': event_id,
+                        'location': selected_location,
+                        'Element': category,
+                        'Event Detector Name': Event_Detector_Name,
+                        'Date': datetime.now(egypt_tz).replace(tzinfo=None),
+                        'Rating': Rating,
+                        'comment': comment,
+                        'responsible person': responsible_person,
+                        'Expected repair Date': '',
+                        'Actual Repair Date': '',
+                        'image path': image_path
+                    }
+                    new_work_order_df = pd.DataFrame([new_work_order_row])
+                    st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_work_order_df], ignore_index=True)
+                    save_work_order_data(st.session_state.work_order_df)
 
                     
 
@@ -294,9 +290,9 @@ if page == 'Event Logging':
         </div>
         """, unsafe_allow_html=True)
         st.subheader('Updated Checklist Data.')
-        st.dataframe(st.session_state.checklist_df)
+        st.dataframe(st.session_state.check_df)
         st.button("Update page")
-        excel_data = to_excel(st.session_state.checklist_df)
+        excel_data = to_excel(st.session_state.check_df)
 
 # زر التنزيل لصيغة Excel
         st.download_button(

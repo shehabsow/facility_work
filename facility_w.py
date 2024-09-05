@@ -129,8 +129,13 @@ def get_next_event_id():
     if os.path.exists('checklist_records.xlsx'):
         df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
         if not df.empty:
-            # استخراج الأرقام فقط من عمود 'event id' وتجاهل أي قيم فارغة
-            event_ids = df['event id'].dropna().apply(lambda x: int(x.split(' ')[-1]) if x.startswith('Work Order ') else None)
+            # استخراج الأرقام فقط من عمود 'event id' وتجاهل أي قيم غير متوافقة
+            event_ids = df['event id'].dropna().apply(
+                lambda x: int(x.split(' ')[-1]) if isinstance(x, str) and x.startswith('Work Order ') else None
+            )
+            # إسقاط القيم الفارغة بعد المعالجة
+            event_ids = event_ids.dropna()
+
             if not event_ids.empty:
                 last_num = event_ids.max()  # استخدم أكبر رقم حدث
             else:

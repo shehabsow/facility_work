@@ -142,8 +142,8 @@ def get_next_event_id():
     except (ValueError, IndexError):
         last_num = 0
 
-    next_num = last_num + 1
-    return f'Work Order {next_num}'
+    
+    return 'Work Order'
 if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()
 

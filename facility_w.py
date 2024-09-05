@@ -144,7 +144,6 @@ def get_next_event_id():
 
     next_num = last_num + 1
     return f'Work Order {next_num}'
-    return f'Work Order {next_num}'
 if 'checklist_df' not in st.session_state:
     st.session_state.checklist_df = load_checklist_data()
 

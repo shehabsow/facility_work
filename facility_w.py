@@ -125,21 +125,20 @@ repair_personnel = ['Shehab Ayman', 'sameh', 'Kaleed', 'Yasser Hassan', 'Mohamed
 
 # دالة لتوليد رقم الحدث التالي
 def get_next_event_id():
-    if st.session_state.checklist_df.empty or 'event id' not in st.session_state.checklist_df.columns:
-        return 'Work Order 1'
+    # تحميل البيانات المخزنة من ملف Excel أو DataFrame فارغ إذا لم يكن الملف موجوداً
+    if os.path.exists('checklist_records.xlsx'):
+        df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
+        event_ids = df['event id'].dropna().tolist()
 
-    event_ids = st.session_state.checklist_df['event id'].dropna().tolist()
-
-    if not event_ids:
-        return 'Work Order 1'
-
-    try:
-        last_id = event_ids[-1]
-        if isinstance(last_id, str):
-            last_num = int(last_id.split(' ')[-1])
+        if event_ids:
+            try:
+                last_id = event_ids[-1]  # استخراج آخر رقم حدث
+                last_num = int(last_id.split(' ')[-1])  # استخراج الرقم من النص
+            except (ValueError, IndexError):
+                last_num = 0
         else:
             last_num = 0
-    except (ValueError, IndexError):
+    else:
         last_num = 0
 
     next_num = last_num + 1

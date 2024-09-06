@@ -19,14 +19,14 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 def load_checklist_data():
     if os.path.exists('work_order_records.xlsx'):
         df = pd.read_excel('work_order_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
-        for col in ['Date', 'Expected repair Date', 'Actual Repair Date','High Risk']:
+        for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.tz_localize(None)
         return df
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Date', 'Rating', 'responsible person', 
-        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'])
+        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment','High Risk'])
 
 def checklist_data():
     if os.path.exists('checklist.xlsx'):

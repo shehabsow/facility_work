@@ -17,8 +17,8 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 # تحميل البيانات مرة واحدة باستخدام التخزين المؤقت
 
 def load_checklist_data():
-    if os.path.exists('checklist_records.xlsx'):
-        df = pd.read_excel('checklist_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
+    if os.path.exists('work_order_records.xlsx'):
+        df = pd.read_excel('work_order_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
         for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.tz_localize(None)
@@ -54,7 +54,7 @@ def to_excel(df):
 # حفظ البيانات في ملف CSV بشكل غير متزامن
 def save_checklist_data(df):
     try:
-        df.to_excel('checklist_records.xlsx', index=False, engine='openpyxl')
+        df.to_excel('work_order_records.xlsx', index=False, engine='openpyxl')
         st.success("Data saved successfully!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
@@ -66,8 +66,8 @@ def save_change_log(df):
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
     
-if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = load_checklist_data()
+if 'work_order_df' not in st.session_state:
+    st.session_state.work_order_df = load_checklist_data()
 
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
@@ -125,10 +125,10 @@ repair_personnel = ['Shehab Ayman', 'sameh', 'Kaleed', 'Yasser Hassan', 'Mohamed
 
 # دالة لتوليد رقم الحدث التالي
 def get_next_event_id():
-    if st.session_state.checklist_df.empty or 'event id' not in st.session_state.checklist_df.columns:
+    if st.session_state.work_order_df.empty or 'event id' not in st.session_state.work_order_df.columns:
         return 'Work Order 1'
 
-    event_ids = st.session_state.checklist_df['event id'].dropna().tolist()
+    event_ids = st.session_state.work_order_df['event id'].dropna().tolist()
 
     if not event_ids:
         return 'Work Order 1'
@@ -144,8 +144,8 @@ def get_next_event_id():
 
     next_num = last_num + 1
     return f'Work Order {next_num}'
-if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = load_checklist_data()
+if 'work_order_df' not in st.session_state:
+    st.session_state.work_order_df = load_checklist_data()
 
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
@@ -180,7 +180,7 @@ if page == 'Event Logging':
     
     if search_button and search_keyword:
         st.session_state.search_keyword = search_keyword
-        search_results = search_in_dataframe(st.session_state.checklist_df, search_keyword, search_option)
+        search_results = search_in_dataframe(st.session_state.work_order_df, search_keyword, search_option)
         st.write(f"Search results for '{search_keyword}'in{search_option}:")
         st.dataframe(search_results, width=1000, height=200)
     st.session_state.refreshed = True
@@ -274,8 +274,8 @@ if page == 'Event Logging':
                 }
     
                 new_row_df = pd.DataFrame([new_row])
-                st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_row_df], ignore_index=True)
-                save_checklist_data(st.session_state.checklist_df)  # استخدام الدالة لحفظ البيانات
+                st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
+                save_checklist_data(st.session_state.work_order_df)  # استخدام الدالة لحفظ البيانات
                 st.success(f"Event recorded successfully! '{category}'!")
 
                     
@@ -294,15 +294,15 @@ if page == 'Event Logging':
         </div>
         """, unsafe_allow_html=True)
         st.subheader('Updated Checklist Data.')
-        st.dataframe(st.session_state.checklist_df)
+        st.dataframe(st.session_state.work_order_df)
         st.button("Update page")
-        excel_data = to_excel(st.session_state.checklist_df)
+        excel_data = to_excel(st.session_state.work_order_df)
 
 # زر التنزيل لصيغة Excel
         st.download_button(
             label="Download Checklist as Excel",
             data=excel_data,
-            file_name='checklist_records.xlsx',
+            file_name='work_order_records.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 if page == 'Work Shop Order':
@@ -313,9 +313,9 @@ if page == 'Work Shop Order':
 
     # الجزء الأول: لاختيار رقم الحدث وإدخال اسم المعدل
     with col1:
-        if not st.session_state.checklist_df.empty:
+        if not st.session_state.work_order_df.empty:
             selected_names = st.multiselect('Select Responsible Person(s)', repair_personnel)
-            filtered_events = st.session_state.checklist_df[st.session_state.checklist_df['responsible person'].isin(selected_names)]
+            filtered_events = st.session_state.work_order_df[st.session_state.work_order_df['responsible person'].isin(selected_names)]
 
             if not filtered_events.empty:
                 event_ids = filtered_events['event id'].tolist()
@@ -335,9 +335,9 @@ if page == 'Work Shop Order':
                     update_end_button = st.button('Update Actual Repair Date')
 
                     if update_start_button:
-                        if selected_event_id in st.session_state.checklist_df['event id'].values:
-                            st.session_state.checklist_df.loc[st.session_state.checklist_df['event id'] == selected_event_id, 'Expected repair Date'] = Expected_repair_Date.strftime('%Y-%m-%d')
-                            st.session_state.checklist_df.to_csv('checklist_records.csv', encoding='utf-8', index=False)
+                        if selected_event_id in st.session_state.work_order_df['event id'].values:
+                            st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Expected repair Date'] = Expected_repair_Date.strftime('%Y-%m-%d')
+                            st.session_state.work_order_df.to_csv('work_order_records.xlsx', encoding='utf-8', index=False)
                             st.success('Expected repair Date Updated successfully')
                             
                             new_log_entry = {
@@ -352,9 +352,9 @@ if page == 'Work Shop Order':
                             st.session_state.log_df.to_csv('change_log.csv', encoding='utf-8',  index=False)
 
                     if update_end_button:
-                        if selected_event_id in st.session_state.checklist_df['event id'].values:
-                            st.session_state.checklist_df.loc[st.session_state.checklist_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
-                            st.session_state.checklist_df.to_csv('checklist_records.csv', index=False)
+                        if selected_event_id in st.session_state.work_order_df['event id'].values:
+                            st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
+                            st.session_state.work_order_df.to_csv('work_order_records.xlsx', index=False)
                             st.success('Actual Repair Date Updated successfully')
                             
                             new_log_entry = {

@@ -322,7 +322,7 @@ if page == 'Event Logging':
         st.download_button(
             label="Download Checklist.",
             data=excel_data,
-            file_name='checklist.xlsx.xlsx',
+            file_name='checklist.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 

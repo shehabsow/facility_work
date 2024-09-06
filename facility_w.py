@@ -77,8 +77,8 @@ def save_change_log(df):
 
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
-if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = checklist_data()
+if 'df' not in st.session_state:
+    st.session_state.df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
 
@@ -156,8 +156,8 @@ def get_next_event_id():
     return f'Work Order {next_num}'
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
-if 'checklist_df' not in st.session_state:
-    st.session_state.checklist_df = checklist_data()
+if 'df' not in st.session_state:
+    st.session_state.df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
     
@@ -256,8 +256,8 @@ if page == 'Event Logging':
                         'Date': datetime.now(egypt_tz).replace(tzinfo=None),
                         'comment': comment}
                     new_check_df = pd.DataFrame([new_check_row])
-                    st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_check_df], ignore_index=True)
-                    save_checklist(st.session_state.checklist_df)
+                    st.session_state.df = pd.concat([st.session_state.df, new_check_df], ignore_index=True)
+                    save_checklist(st.session_state.df)
                 else:
                     event_id = get_next_event_id()
                     risk_value = 'Yes' if risk_value else 'No'
@@ -315,9 +315,9 @@ if page == 'Event Logging':
         """, unsafe_allow_html=True)
         
         st.subheader('Updated checklist.')
-        st.dataframe(st.session_state.checklist_df)
+        st.dataframe(st.session_state.df)
         st.button("Update page")
-        excel_data = to_excel(st.session_state.checklist_df)
+        excel_data = to_excel(st.session_state.df)
         st.download_button(
             label="Download Checklist.",
             data=excel_data,
@@ -368,7 +368,7 @@ if page == 'Work Shop Order':
                     if update_start_button:
                         if selected_event_id in st.session_state.work_order_df['event id'].values:
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Expected repair Date'] = Expected_repair_Date.strftime('%Y-%m-%d')
-                            st.session_state.work_order_df.to_csv('work_order_records.xlsx', encoding='utf-8', index=False)
+                            st.session_state.work_order_df.to_excel('work_order_records.xlsx', engine='openpyxl', index=False)
                             st.success('Expected repair Date Updated successfully')
                             
                             new_log_entry = {
@@ -380,12 +380,12 @@ if page == 'Work Shop Order':
                             }
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
-                            st.session_state.log_df.to_csv('change_log.csv', encoding='utf-8',  index=False)
+                            st.session_state.log_df.to_excel('change_log.xlsx', engine='openpyxl',  index=False)
 
                     if update_end_button:
                         if selected_event_id in st.session_state.work_order_df['event id'].values:
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
-                            st.session_state.work_order_df.to_csv('work_order_records.xlsx', index=False)
+                            st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
                             st.success('Actual Repair Date Updated successfully')
                             
                             new_log_entry = {

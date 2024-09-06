@@ -79,7 +79,7 @@ def save_change_log(df):
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
 if 'checklist_df' not in st.session_state:
-    st.session_state.work_order_df = checklist_data()
+    st.session_state.checklist_df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
 
@@ -158,14 +158,14 @@ def get_next_event_id():
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
 if 'checklist_df' not in st.session_state:
-    st.session_state.work_order_df = checklist_data()
+    st.session_state.checklist_df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
     
 page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'View Change Log', 'Clear data'])
 
 if page == 'Event Logging':
-    checklist_df = load_checklist_data()
+    work_order = load_checklist_data()
     col1, col2 = st.columns([2, 0.5])
     with col1:
         st.markdown("""

@@ -261,7 +261,7 @@ if page == 'Event Logging':
                     save_checklist(st.session_state.checklist_df)
                 else:
                     event_id = get_next_event_id()
-                    risk_value = 'Yes' if risk else 'No'
+                    risk_value = 'Yes' if risk_value else 'No'
     
                 image_path = ""
                 if uploaded_file is not None:

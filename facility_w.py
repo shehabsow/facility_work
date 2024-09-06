@@ -35,7 +35,6 @@ def checklist_data():
         'event id', 'location', 'Element', 
         'Event Detector Name', 'Date', 'Rating', 'comment'])
     
-
 def load_change_log():
     if os.path.exists('change_log.xlsx'):
         return pd.read_excel('change_log.xlsx', engine='openpyxl')
@@ -440,15 +439,23 @@ elif page == 'View Change Log':
     )
     
 
+    
 elif page == 'Clear data':
     st.title('Clear Data')
-    if st.button('Clear Checklist Data'):
-        st.session_state.checklist_df = pd.DataFrame(columns=[
+    if st.button('Clear work order Data'):
+        st.session_state.work_order_df = pd.DataFrame(columns=[
             'event id', 'location', 'Element', 'Event Detector Name', 
             'Date', 'Rating', 'responsible person', 
             'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'
         ])
-        st.session_state.checklist_df.to_excel('checklist_records.xlsx', index=False)
+        st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
+        st.success('Checklist data cleared!')
+
+    if st.button('Clear Checklist Data'):
+        st.session_state.checklist_df = pd.DataFrame(columns=[
+        'event id', 'location', 'Element', 
+        'Event Detector Name', 'Date', 'Rating', 'comment'])
+        st.session_state.checklist_df.to_excel('checklist.xlsx', index=False)
         st.success('Checklist data cleared!')
 
     if st.button('Clear Log Data'):

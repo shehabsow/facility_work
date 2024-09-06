@@ -242,9 +242,9 @@ if page == 'Event Logging':
                     Is this a high risk?
                 </h2>
                 """, unsafe_allow_html=True)
-                risk = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')
+                risk_value = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')
             else:
-                risk = None
+                risk_value = None
     
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:  # This is a "Check" event

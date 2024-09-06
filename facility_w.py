@@ -19,15 +19,22 @@ egypt_tz = pytz.timezone('Africa/Cairo')
 def load_checklist_data():
     if os.path.exists('work_order_records.xlsx'):
         df = pd.read_excel('work_order_records.xlsx', sheet_name='Sheet1', engine='openpyxl')
-        for col in ['Date', 'Expected repair Date', 'Actual Repair Date']:
+        for col in ['Date', 'Expected repair Date', 'Actual Repair Date','High Risk']:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.tz_localize(None)
         return df
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Date', 'Rating', 'responsible person', 
-        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'
-    ])
+        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'])
+
+def checklist_data():
+    if os.path.exists('checklist.xlsx'):
+        return pd.read_excel('checklist.xlsx', engine='openpyxl')
+    return pd.DataFrame(columns=[
+        'event id', 'location', 'Element', 
+        'Event Detector Name', 'Date', 'Rating', 'comment'])
+    
 
 def load_change_log():
     if os.path.exists('change_log.xlsx'):
@@ -37,21 +44,22 @@ def load_change_log():
         'modification type', 'new Date'
     ])
 def to_excel(df):
-    # تأكد من أن جميع الأعمدة التي تحتوي على تواريخ هي غير مزودة بمعلومات منطقة زمنية
     for col in df.select_dtypes(include=['datetime64[ns, UTC]', 'datetime64[ns]']):
         df[col] = df[col].apply(lambda x: x.tz_localize(None) if x.tzinfo else x)
-
-    # إنشاء تدفق بيانات في الذاكرة
     output = BytesIO()
-
-    # استخدام ExcelWriter لكتابة DataFrame إلى التدفق
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
-    
     return output.getvalue()
 
 
-# حفظ البيانات في ملف CSV بشكل غير متزامن
+def save_checklist(df):
+    try:
+        df.to_excel('checklist.xlsx', index=False, engine='openpyxl')
+        st.success("Data saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving the data: {str(e)}")
+
+
 def save_checklist_data(df):
     try:
         df.to_excel('work_order_records.xlsx', index=False, engine='openpyxl')
@@ -59,16 +67,19 @@ def save_checklist_data(df):
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
+
 def save_change_log(df):
     try:
         df.to_excel('change_log.xlsx', index=False, engine='openpyxl')
         st.success("Data saved successfully!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
-    
+
+
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
-
+if 'checklist_df' not in st.session_state:
+    st.session_state.work_order_df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
 
@@ -146,7 +157,8 @@ def get_next_event_id():
     return f'Work Order {next_num}'
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
-
+if 'checklist_df' not in st.session_state:
+    st.session_state.work_order_df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
     
@@ -235,9 +247,18 @@ if page == 'Event Logging':
                 risk = None
     
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
-                if Rating in [0, 'N/A']:
+                if Rating in [0, 'N/A']:  # This is a "Check" event
                     event_id = 'check'
-                    risk_value = ''  # No risk for these ratings
+                    new_check_row = {
+                        'event id': event_id,
+                        'location': selected_location,
+                        'Element': category,
+                        'Event Detector Name': Event_Detector_Name,
+                        'Date': datetime.now(egypt_tz).replace(tzinfo=None),
+                        'comment': comment}
+                    new_check_df = pd.DataFrame([new_check_row])
+                    st.session_state.checklist_df = pd.concat([st.session_state.checklist_df, new_check_df], ignore_index=True)
+                    save_checklist(st.session_state.checklist_df)
                 else:
                     event_id = get_next_event_id()
                     risk_value = 'Yes' if risk else 'No'
@@ -293,14 +314,25 @@ if page == 'Event Logging':
             </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.subheader('Updated Checklist Data.')
+        
+        st.subheader('Updated checklist.')
+        st.dataframe(st.session_state.checklist_df)
+        st.button("Update page")
+        excel_data = to_excel(st.session_state.checklist_df)
+        st.download_button(
+            label="Download Checklist.",
+            data=excel_data,
+            file_name='checklist.xlsx.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+
+        
+        st.subheader('Updated work order.')
         st.dataframe(st.session_state.work_order_df)
         st.button("Update page")
         excel_data = to_excel(st.session_state.work_order_df)
-
-# زر التنزيل لصيغة Excel
         st.download_button(
-            label="Download Checklist as Excel",
+            label="Download work order.",
             data=excel_data,
             file_name='work_order_records.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

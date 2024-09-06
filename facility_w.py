@@ -291,7 +291,7 @@ if page == 'Event Logging':
                     'Expected repair Date': '',
                     'Actual Repair Date': '',
                     'image path': image_path,
-                    'High Risk': High_Risk
+                    'High Risk': risk_value
                 }
     
                 new_row_df = pd.DataFrame([new_row])

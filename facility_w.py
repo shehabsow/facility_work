@@ -295,7 +295,7 @@ if page == 'Event Logging':
         
         st.subheader('Updated checklist.')
         st.dataframe(st.session_state.df)
-        st.button("Update page")
+        st.button("Update page",key='Update 1')
         excel_data_checklist = to_excel(st.session_state.df)
         st.download_button(
             label="Download Checklist.",
@@ -307,7 +307,7 @@ if page == 'Event Logging':
         
         st.subheader('Updated work order.')
         st.dataframe(st.session_state.work_order_df)
-        st.button("Update page")
+        st.button("Update page",key='Update 2')
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(
             label="Download work order.",

@@ -173,6 +173,7 @@ if page == 'Event Logging':
                 </h2>
                 """, unsafe_allow_html=True)
     with col2:
+        st.button("Update page",key='Update 2')
         search_keyword = st.session_state.get('search_keyword', '')
         search_keyword = st.text_input("Enter keyword to search:", search_keyword)
         search_button = st.button("Search")
@@ -280,7 +281,7 @@ if page == 'Event Logging':
                                 
 
     with col2:
-        st.button("Update page",key='Update 2')
+        
         st.markdown("""
         <div style="border: 2px solid #ffeb3b; padding: 20px; background-color: #e0f7fa; color: #007BFF; border-radius: 5px; width: 100%">
             <h4 style='text-align: center;color: blue;'>Inspection Rating System.</h4>

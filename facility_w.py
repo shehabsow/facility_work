@@ -353,7 +353,7 @@ if page == 'Work Shop Order':
                         st.session_state.selected_event = selected_event  # حفظ الحدث المحدد في الحالة
 
                 modifier_name = st.text_input('Modifier Name')
-
+                st.button("Update page")
                 if modifier_name in repair_personnel:
                     Expected_repair_Date = st.date_input('Expected repair Date')
                     Actual_Repair_Date = st.date_input('Actual Repair Date')
@@ -399,7 +399,7 @@ if page == 'Work Shop Order':
                 st.warning("No events found for the selected person(s).")
         else:
             st.warning("No checklist data available.")
-    st.button("Update page")
+    
     # الجزء الثاني: عرض تفاصيل الحدث المحدد
     with col2:
         if 'selected_event' in st.session_state and not st.session_state.selected_event.empty:

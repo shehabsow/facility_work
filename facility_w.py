@@ -230,23 +230,15 @@ if page == 'Event Logging':
                 st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
         
             col1a, col2a, col3a, col4a = st.columns([1, 2, 2, 2])
-            Event_Detector_Name = col2a.text_input('Detector Name.', key=f"detector_name_{category}_{selected_location}")
-            Rating = col1a.selectbox('Rating.', [0, 1, 2, 3, 'N/A'], key=f"Rating_{category}_{selected_location}")
-            comment = col3a.text_input('Comment.', '', key=f"comment_{category}_{selected_location}")
-            responsible_person = col4a.selectbox('Select Responsible Person.', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
-            uploaded_file = st.file_uploader(f"Upload Images {category}", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
-            if Rating in [1, 2, 3]:
-                st.markdown("""
-                <h2 style="font-size: 25px; color: red;">
-                    Is this a high risk?
-                </h2>
-                """, unsafe_allow_html=True)
-                risk_value = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')
-            else:
-                risk_value = None
-    
+            Event_Detector_Name = st.text_input('Detector Name', key=f"detector_name_{category}_{selected_location}")
+            Rating = st.selectbox('Rating', [0, 1, 2, 3, 'N/A'], key=f"rating_{category}_{selected_location}")
+            comment = st.text_input('Comment', key=f"comment_{category}_{selected_location}")
+            responsible_person = st.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
+            uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
+            risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}') if Rating in [1, 2, 3] else None
+
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
-                if Rating in [0, 'N/A']:  # This is a "Check" event
+                if Rating in [0, 'N/A']:
                     event_id = 'check'
                     new_check_row = {
                         'event id': event_id,
@@ -260,42 +252,24 @@ if page == 'Event Logging':
                     save_checklist(st.session_state.df)
                 else:
                     event_id = get_next_event_id()
-                    risk_value = 'Yes' if risk_value else 'No'
-    
-                image_path = ""
-                if uploaded_file is not None:
-                    try:
-                        image = Image.open(uploaded_file)
-                        if image.mode == "RGBA":
-                            image = image.convert("RGB")
-                        max_size = (800, 600)
-                        image.thumbnail(max_size)
-                        image_filename = os.path.join('uploaded_images', f"{event_id}.jpg")
-                        image.save(image_filename, optimize=True, quality=85)
-                        image_path = image_filename
-                        st.success(f"Image saved successfully as {uploaded_file.name}")
-                    except Exception as e:
-                        st.error(f"An error occurred while saving the image: {str(e)}")
-                        image_path = ""
-    
-                new_row = {
-                    'event id': event_id,
-                    'location': selected_location,
-                    'Element': category,
-                    'Event Detector Name': Event_Detector_Name,
-                    'Date': datetime.now(egypt_tz).replace(tzinfo=None),
-                    'Rating': Rating,
-                    'comment': comment,
-                    'responsible person': responsible_person,
-                    'Expected repair Date': '',
-                    'Actual Repair Date': '',
-                    'image path': image_path,
-                    'High Risk': risk_value
-                }
-    
-                new_row_df = pd.DataFrame([new_row])
-                st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
-                save_checklist_data(st.session_state.work_order_df)  # استخدام الدالة لحفظ البيانات
+                    new_row = {
+                        'event id': event_id,
+                        'location': selected_location,
+                        'Element': category,
+                        'Event Detector Name': Event_Detector_Name,
+                        'Date': datetime.now(egypt_tz).replace(tzinfo=None),
+                        'Rating': Rating,
+                        'comment': comment,
+                        'responsible person': responsible_person,
+                        'Expected repair Date': '',
+                        'Actual Repair Date': '',
+                        'image path': '',
+                        'High Risk': 'Yes' if risk_value else 'No'
+                    }
+                    new_row_df = pd.DataFrame([new_row])
+                    st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
+                    save_checklist_data(st.session_state.work_order_df)
+  # استخدام الدالة لحفظ البيانات
                 st.success(f"Event recorded successfully! '{category}'!")
 
                     

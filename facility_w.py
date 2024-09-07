@@ -431,10 +431,10 @@ elif page == 'Clear data':
         st.success('Checklist data cleared!')
 
     if st.button('Clear Checklist Data'):
-        st.session_state.checklist_df = pd.DataFrame(columns=[
+        st.session_state.df = pd.DataFrame(columns=[
         'event id', 'location', 'Element', 
         'Event Detector Name', 'Date', 'Rating', 'comment'])
-        st.session_state.checklist_df.to_excel('checklist.xlsx', index=False)
+        st.session_state.df.to_excel('checklist.xlsx', index=False)
         st.success('Checklist data cleared!')
 
     if st.button('Clear Log Data'):

@@ -54,7 +54,7 @@ def to_excel(df):
 def save_checklist(df):
     try:
         df.to_excel('checklist.xlsx', index=False, engine='openpyxl')
-        st.success(f"checklist recorded successfully: '{category}'!")
+        st.success(f"checklist recorded successfully: {category}!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
@@ -62,7 +62,7 @@ def save_checklist(df):
 def save_checklist_data(df):
     try:
         df.to_excel('work_order_records.xlsx', index=False, engine='openpyxl')
-        st.success(f"work order recorded successfully: '{category}'!")
+        st.success(f"work order recorded successfully: {category}!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
@@ -252,6 +252,11 @@ if page == 'Event Logging':
                     save_checklist(st.session_state.df)
                 else:
                     event_id = get_next_event_id()
+                    st.markdown("""
+                <h2 style="font-size: 25px; color: red;">
+                    Is this a high risk?
+                </h2>
+                """, unsafe_allow_html=True)
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,

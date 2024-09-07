@@ -235,7 +235,8 @@ if page == 'Event Logging':
             comment = col3a.text_input('Comment', key=f"comment_{category}_{selected_location}")
             responsible_person = col4a.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
-            risk_value = st.checkbox('checkbox', key=f'high_risk_checkbox_{category}_{selected_location}')    
+            risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}') if Rating in [1, 2, 3] else None
+
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'
@@ -250,7 +251,6 @@ if page == 'Event Logging':
                     st.session_state.df = pd.concat([st.session_state.df, new_check_df], ignore_index=True)
                     save_checklist(st.session_state.df)
                 else:
-                    st.markdown("<span style='color:red; font-weight:bold;'>This is a high-risk issue!</span>", unsafe_allow_html=True)
                     event_id = get_next_event_id()
                     new_row = {
                         'event id': event_id,

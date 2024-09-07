@@ -244,7 +244,7 @@ if page == 'Event Logging':
             else:
                 risk_value = None
             
-            if st.button(f'Add {category}', key=button_key"):
+            if st.button(f'Add {category}', key=button_key):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'
                     new_check_row = {

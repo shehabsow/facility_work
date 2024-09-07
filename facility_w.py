@@ -230,10 +230,10 @@ if page == 'Event Logging':
                 st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
         
             col1a, col2a, col3a, col4a = st.columns([1, 2, 2, 2])
-            Event_Detector_Name = st.text_input('Detector Name', key=f"detector_name_{category}_{selected_location}")
-            Rating = st.selectbox('Rating', [0, 1, 2, 3, 'N/A'], key=f"rating_{category}_{selected_location}")
-            comment = st.text_input('Comment', key=f"comment_{category}_{selected_location}")
-            responsible_person = st.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
+            Event_Detector_Name = col2a.text_input('Detector Name', key=f"detector_name_{category}_{selected_location}")
+            Rating = col1a.selectbox('Rating', [0, 1, 2, 3, 'N/A'], key=f"rating_{category}_{selected_location}")
+            comment = col3a.text_input('Comment', key=f"comment_{category}_{selected_location}")
+            responsible_person = col4a.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}') if Rating in [1, 2, 3] else None
 

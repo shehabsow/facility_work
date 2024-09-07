@@ -260,6 +260,22 @@ if page == 'Event Logging':
                     save_checklist(st.session_state.df)
                 else:
                     event_id = get_next_event_id()
+                    image_path = ""
+                    if uploaded_file is not None:
+                        try:
+                            image = Image.open(uploaded_file)
+                            if image.mode == "RGBA":
+                                image = image.convert("RGB")
+                            max_size = (800, 600)
+                            image.thumbnail(max_size)
+                            image_filename = os.path.join('uploaded_images', f"{event_id}.jpg")
+                            image.save(image_filename, optimize=True, quality=85)
+                            image_path = image_filename
+                            st.success(f"Image saved successfully as {uploaded_file.name}")
+                        except Exception as e:
+                            st.error(f"An error occurred while saving the image: {str(e)}")
+                            image_path = ""
+
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,
@@ -271,7 +287,7 @@ if page == 'Event Logging':
                         'responsible person': responsible_person,
                         'Expected repair Date': '',
                         'Actual Repair Date': '',
-                        'image path': '',
+                        'image path': 'image_path',
                         'High Risk': 'Yes' if risk_value else 'No'
                     }
                     new_row_df = pd.DataFrame([new_row])

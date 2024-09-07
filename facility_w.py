@@ -235,8 +235,15 @@ if page == 'Event Logging':
             comment = col3a.text_input('Comment', key=f"comment_{category}_{selected_location}")
             responsible_person = col4a.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
-            risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}') if Rating in [1, 2, 3] else None
-
+            
+            # Show risk checkbox only if Rating is 1, 2, or 3
+            if Rating in [1, 2, 3]:
+                # Display a red warning message above the risk checkbox
+                st.markdown(f"<p style='color: red; font-weight: bold;'>This is a high-risk event, please proceed carefully!</p>", unsafe_allow_html=True)
+                risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}')
+            else:
+                risk_value = None
+            
             if st.button(f'Add {category}', key=f"add_{category}_{selected_location}"):
                 if Rating in [0, 'N/A']:
                     event_id = 'check'
@@ -269,8 +276,8 @@ if page == 'Event Logging':
                     new_row_df = pd.DataFrame([new_row])
                     st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
                     save_checklist_data(st.session_state.work_order_df)
-
-                    
+            
+                                
 
     with col2:
         st.markdown("""

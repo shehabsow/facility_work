@@ -54,7 +54,7 @@ def to_excel(df):
 def save_checklist(df):
     try:
         df.to_excel('checklist.xlsx', index=False, engine='openpyxl')
-        st.success("Data saved successfully!")
+        st.success(f"checklist recorded successfully: '{category}'!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
@@ -62,7 +62,7 @@ def save_checklist(df):
 def save_checklist_data(df):
     try:
         df.to_excel('work_order_records.xlsx', index=False, engine='openpyxl')
-        st.success("Data saved successfully!")
+        st.success(f"work order recorded successfully: '{category}'!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
@@ -269,8 +269,6 @@ if page == 'Event Logging':
                     new_row_df = pd.DataFrame([new_row])
                     st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
                     save_checklist_data(st.session_state.work_order_df)
-  # استخدام الدالة لحفظ البيانات
-                st.success(f"Event recorded successfully! '{category}'!")
 
                     
 

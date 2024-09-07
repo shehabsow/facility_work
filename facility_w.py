@@ -252,11 +252,7 @@ if page == 'Event Logging':
                     save_checklist(st.session_state.df)
                 else:
                     event_id = get_next_event_id()
-                    st.markdown("""
-                <h2 style="font-size: 25px; color: red;">
-                    Is this a high risk?
-                </h2>
-                """, unsafe_allow_html=True)
+                
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,

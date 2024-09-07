@@ -301,8 +301,8 @@ if page == 'Event Logging':
             label="Download Checklist.",
             data=excel_data_checklist,
             file_name='checklist.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            key='download_checklist')
 
         
         st.subheader('Updated work order.')
@@ -313,8 +313,8 @@ if page == 'Event Logging':
             label="Download work order.",
             data=excel_data_work,
             file_name='work_order_records.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            key='download_work_order_button')
 if page == 'Work Shop Order':
     st.title('Repair status update')
 

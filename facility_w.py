@@ -156,12 +156,6 @@ def get_next_event_id():
     return f'Work Order {next_num}'
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
-def highlight_actual_repair_date(df):
-    # Apply green color if 'Actual Repair Date' is not null
-    return df.style.applymap(lambda x: 'background-color: lightgreen' if pd.notna(x) else '', subset=['Actual Repair Date'])
-
-# Display the DataFrame with conditional formatting
-st.dataframe(highlight_actual_repair_date(st.session_state.work_order_df))
 if 'df' not in st.session_state:
     st.session_state.df = checklist_data()
 if 'log_df' not in st.session_state:
@@ -331,19 +325,36 @@ if page == 'Event Logging':
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_checklist')
 
+        if 'work_order_df' not in st.session_state:
+            st.session_state.work_order_df = pd.read_excel('work_order_records.xlsx')
+        
+        # Function to apply conditional coloring to the DataFrame
+        def highlight_actual_repair_date(df):
+            return df.style.applymap(
+                lambda x: 'background-color: lightgreen' if pd.notna(x) else '', 
+                subset=['event id'] if 'Actual Repair Date' in df.columns and df['Actual Repair Date'].notna().any() else []
+            )
+        
+        # Example UI
         st.markdown("""
-                <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
-                    Updated work order:
-                </h2>
-                """, unsafe_allow_html=True)
-        st.dataframe(st.session_state.work_order_df)
+            <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                Updated work order:
+            </h2>
+            """, unsafe_allow_html=True)
+        
+        # Apply the highlight function and display DataFrame
+        highlighted_df = highlight_actual_repair_date(st.session_state.work_order_df)
+        st.dataframe(highlighted_df)
+        
+        # Convert to Excel and provide download button
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(
             label="Download work order.",
             data=excel_data_work,
             file_name='work_order_records.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            key='download_work_order_button')
+            key='download_work_order_button'
+        )
 if page == 'Work Shop Order':
     st.title('Repair status update')
 

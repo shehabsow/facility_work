@@ -310,8 +310,12 @@ if page == 'Event Logging':
             </ul>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown("""
+                <h2 style='text-align: center; font-size: 40px; color: #A52A2A;'>
+                    Updated checklist:
+                </h2>
+                """, unsafe_allow_html=True)
         
-        st.subheader('Updated checklist.')
         st.dataframe(st.session_state.df)
         excel_data_checklist = to_excel(st.session_state.df)
         st.download_button(

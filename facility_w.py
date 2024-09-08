@@ -330,10 +330,10 @@ if page == 'Event Logging':
         
         # Function to apply conditional coloring to the DataFrame
         def highlight_actual_repair_date(df):
-    # تلوين السطر بالكامل إذا كان يحتوي على تاريخ فعلي للإصلاح
-            return df.style.apply(
-                lambda row: ['background-color: lightgreen' if pd.notna(row['Actual Repair Date']) else '' for _ in row],
-                axis=1
+    # إذا كانت هناك تواريخ للإصلاح الفعلي، قم بتلوين السطر باللون الأخضر
+            return df.style.applymap(
+                lambda x: 'background-color: lightgreen' if pd.notna(x) else '', 
+                subset=['Actual Repair Date'] if 'Actual Repair Date' in df.columns else []
             )
 
         

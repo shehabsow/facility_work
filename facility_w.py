@@ -487,8 +487,3 @@ elif page == 'Clear data':
         st.session_state.log_df.to_excel('change_log.xlsx', index=False)
         st.success('Log data cleared!')
 
-def highlight_actual_repair_date(val):
-    if pd.notna(val):
-        return 'background-color: yellow'
-    return ''
-st.dataframe(st.session_state.work_order_df.style.applymap(highlight_actual_repair_date, subset=['Actual Repair Date']), width=1000, height=300)

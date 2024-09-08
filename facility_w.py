@@ -311,7 +311,7 @@ if page == 'Event Logging':
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
-                <h2 style='text-align: center; font-size: 40px; color: #A52A2A;'>
+                <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
                     Updated checklist:
                 </h2>
                 """, unsafe_allow_html=True)
@@ -325,8 +325,11 @@ if page == 'Event Logging':
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_checklist')
 
-        
-        st.subheader('Updated work order.')
+        st.markdown("""
+                <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                    Updated work order:
+                </h2>
+                """, unsafe_allow_html=True)
         st.dataframe(st.session_state.work_order_df)
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(

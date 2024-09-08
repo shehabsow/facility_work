@@ -74,7 +74,12 @@ def save_change_log(df):
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
+def highlight_actual_repair_date(df):
+    # Apply green color if 'Actual Repair Date' is not null
+    return df.style.applymap(lambda x: 'background-color: lightgreen' if pd.notna(x) else '', subset=['Actual Repair Date'])
 
+# Display the DataFrame with conditional formatting
+st.dataframe(highlight_actual_repair_date(st.session_state.work_order_df))
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
 if 'df' not in st.session_state:

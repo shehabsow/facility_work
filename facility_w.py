@@ -367,10 +367,10 @@ if page == 'Event Logging':
         excel_completed_work = to_excel(st.session_state.completed)
         st.download_button(
             label="Download completed work order.",
-            data=excel_data_work,
+            data=excel_completed_work,
             file_name='completed_work_orders.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            key='download_work_order_button'
+            key='download_work_completed_button'
         )
 if page == 'Work Shop Order':
     st.title('Repair status update')

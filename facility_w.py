@@ -35,6 +35,14 @@ def checklist_data():
         'event id', 'location', 'Element', 
         'Event Detector Name', 'Date', 'Rating', 'comment'])
     
+def load_completed_work_orders():
+    if os.path.exists('completed_work_orders.xlsx'):
+        return pd.read_excel('completed_work_orders.xlsx', engine='openpyxl')
+    return pd.DataFrame(columns=[
+        'event id', 'location', 'Element', 'Event Detector Name', 
+        'Date', 'Rating', 'responsible person', 
+        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment', 'High Risk', 'Status'])
+    
 def load_change_log():
     if os.path.exists('change_log.xlsx'):
         return pd.read_excel('change_log.xlsx', engine='openpyxl')
@@ -66,6 +74,13 @@ def save_checklist_data(df):
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
+def save_completed_work_orders(df):
+    try:
+        df.to_excel('completed_work_orders.xlsx', index=False, engine='openpyxl')
+        st.success("Completed work orders saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving the data: {str(e)}")
+
 
 def save_change_log(df):
     try:
@@ -79,6 +94,8 @@ if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
 if 'df' not in st.session_state:
     st.session_state.df = checklist_data()
+if 'completed' not in st.session_state:
+    st.session_state.completed = load_completed_work_orders()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
 
@@ -338,6 +355,21 @@ if page == 'Event Logging':
             data=excel_data_work,
             file_name='work_order_records.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            key='download_work_order_button')
+        
+        st.markdown("""
+            <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                completed work order:
+            </h2>
+            """, unsafe_allow_html=True)
+        
+        st.dataframe(st.session_state.completed)
+        excel_completed_work = to_excel(st.session_state.completed)
+        st.download_button(
+            label="Download completed work order.",
+            data=excel_data_work,
+            file_name='completed_work_orders.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_work_order_button'
         )
 if page == 'Work Shop Order':
@@ -389,9 +421,17 @@ if page == 'Work Shop Order':
                     if update_end_button:
                         if selected_event_id in st.session_state.work_order_df['event id'].values:
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
-                            st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
-                            st.success('Actual Repair Date Updated successfully')
                             
+                            # تعيين الحالة إلى "Done" إذا تم إدخال Actual Repair Date
+                            st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
+                            
+                            # إضافة إلى سجل أوامر العمل المكتملة
+                            completed_order = st.session_state.work_order_df[st.session_state.work_order_df['event id'] == selected_event_id]
+                            completed_orders_df = pd.concat([load_completed_work_orders(), completed_order], ignore_index=True)
+                            save_completed_work_orders(completed_orders_df)
+                            
+                            st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
+                            st.success('Actual Repair Date Updated and status set to "Done"')
                             new_log_entry = {
                                 'event id': selected_event_id,
                                 'modifier name': modifier_name,

@@ -331,10 +331,6 @@ if page == 'Event Logging':
             </h2>
             """, unsafe_allow_html=True)
         
-        # Apply the highlight function and display DataFrame
-        highlighted_df = highlight_actual_repair_date(st.session_state.work_order_df)
-        st.dataframe(highlighted_df)
-        
         # Convert to Excel and provide download button
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(

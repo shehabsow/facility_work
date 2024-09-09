@@ -257,7 +257,7 @@ if page == 'Event Logging':
             # Show risk checkbox only if Rating is 1, 2, or 3
             if Rating in [1, 2, 3]:
                 # Display a red warning message above the risk checkbox
-                st.markdown(f"<p style='color: red; font-weight: bold;'>Is this a high risk?</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: red; font-size: 22px;'>Is this a high risk?</p>", unsafe_allow_html=True)
                 risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}')
             else:
                 risk_value = None

@@ -331,7 +331,7 @@ if page == 'Event Logging':
             </h2>
             """, unsafe_allow_html=True)
         
-        # Convert to Excel and provide download button
+        st.dataframe(st.session_state.work_order_df)
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(
             label="Download work order.",

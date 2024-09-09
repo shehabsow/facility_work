@@ -357,21 +357,7 @@ if page == 'Event Logging':
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_work_order_button')
         
-        st.markdown("""
-            <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
-                completed work order:
-            </h2>
-            """, unsafe_allow_html=True)
         
-        st.dataframe(st.session_state.completed)
-        excel_completed_work = to_excel(st.session_state.completed)
-        st.download_button(
-            label="Download completed work order.",
-            data=excel_completed_work,
-            file_name='completed_work_orders.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            key='download_work_completed_button'
-        )
 if page == 'Work Shop Order':
     st.title('Repair status update')
 
@@ -466,6 +452,22 @@ if page == 'Work Shop Order':
 
         else:
             st.warning("Select an event to view details.")
+
+        st.markdown("""
+            <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                completed work order:
+            </h2>
+            """, unsafe_allow_html=True)
+        
+        st.dataframe(st.session_state.completed)
+        excel_completed_work = to_excel(st.session_state.completed)
+        st.download_button(
+            label="Download completed work order.",
+            data=excel_completed_work,
+            file_name='completed_work_orders.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            key='download_work_completed_button'
+        )
     
 elif page == 'View Change Log':
     st.title('View Change Log')

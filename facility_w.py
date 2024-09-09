@@ -177,7 +177,7 @@ if 'df' not in st.session_state:
     st.session_state.df = checklist_data()
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
-st_autorefresh(interval=60000, key="autorefresh")
+
 page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'View Change Log', 'Clear data'])
 
 if page == 'Event Logging':

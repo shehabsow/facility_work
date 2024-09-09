@@ -414,7 +414,7 @@ if page == 'Work Shop Order':
                             #st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
                             
                             # إضافة إلى سجل أوامر العمل المكتملة
-                            completed_order = st.session_state.completed[st.session_state.completed['event id'] == selected_event_id]
+                            completed_order = st.session_state.work_order_df[st.session_state.work_order_df['event id'] == selected_event_id]
                             completed_orders_df = pd.concat([load_completed_work_orders(), completed_order], ignore_index=True)
                             save_completed_work_orders(completed_orders_df)
                             

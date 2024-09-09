@@ -411,7 +411,7 @@ if page == 'Work Shop Order':
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
                             
                             # تعيين الحالة إلى "Done" إذا تم إدخال Actual Repair Date
-                            #st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
+                            st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
                             
                             # إضافة إلى سجل أوامر العمل المكتملة
                             completed_order = st.session_state.work_order_df[st.session_state.work_order_df['event id'] == selected_event_id]

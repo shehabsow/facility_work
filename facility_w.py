@@ -173,6 +173,8 @@ def get_next_event_id():
     return f'Work Order {next_num}'
 if 'work_order_df' not in st.session_state:
     st.session_state.work_order_df = load_checklist_data()
+if 'completed' not in st.session_state:
+    st.session_state.completed = load_completed_work_orders()
 if 'df' not in st.session_state:
     st.session_state.df = checklist_data()
 if 'log_df' not in st.session_state:
@@ -409,10 +411,10 @@ if page == 'Work Shop Order':
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
                             
                             # تعيين الحالة إلى "Done" إذا تم إدخال Actual Repair Date
-                            st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
+                            #st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
                             
                             # إضافة إلى سجل أوامر العمل المكتملة
-                            completed_order = st.session_state.work_order_df[st.session_state.work_order_df['event id'] == selected_event_id]
+                            completed_order = st.session_state.completed[st.session_state.completed['event id'] == selected_event_id]
                             completed_orders_df = pd.concat([load_completed_work_orders(), completed_order], ignore_index=True)
                             save_completed_work_orders(completed_orders_df)
                             

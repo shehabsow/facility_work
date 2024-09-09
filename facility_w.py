@@ -325,19 +325,6 @@ if page == 'Event Logging':
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_checklist')
 
-        if 'work_order_df' not in st.session_state:
-            st.session_state.work_order_df = pd.read_excel('work_order_records.xlsx')
-        
-        # Function to apply conditional coloring to the DataFrame
-        def highlight_actual_repair_date(df):
-    # إذا كانت هناك تواريخ للإصلاح الفعلي، قم بتلوين السطر باللون الأخضر
-            return df.style.applymap(
-                lambda x: 'background-color: lightgreen' if pd.notna(x) else '', 
-                subset=['Actual Repair Date'] if 'Actual Repair Date' in df.columns else []
-            )
-
-        
-        # Example UI
         st.markdown("""
             <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
                 Updated work order:

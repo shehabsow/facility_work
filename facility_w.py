@@ -74,16 +74,12 @@ def save_checklist_data(df):
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")
 
-def save_completed_work_orders(completed_orders_df):
-    # Check if file exists, append if it does
-    file_path = 'completed_work_order.xlsx'
-    if os.path.exists(file_path):
-        existing_df = pd.read_excel(file_path)
-        combined_df = pd.concat([existing_df, completed_orders_df], ignore_index=True)
-        combined_df.to_excel(file_path, index=False)
-    else:
-        # If file doesn't exist, save the new completed orders
-        completed_orders_df.to_excel(file_path, index=False)
+def save_completed_work_orders(df):
+    try:
+        df.to_excel('completed_work_order.xlsx', index=False, engine='openpyxl')
+        st.success("Completed work orders saved successfully!")
+    except Exception as e:
+        st.error(f"An error occurred while saving the data: {str(e)}")
 
 
 def save_change_log(df):
@@ -427,7 +423,7 @@ if page == 'Work Shop Order':
                             completed_orders_df = pd.concat([load_completed_work_orders(), completed_order], ignore_index=True)
                             save_completed_work_orders(completed_orders_df)
                             
-                            st.session_state.completed.to_excel('completed_work_order.xlsx', index=False)
+                            st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
                             st.success('Actual Repair Date Updated and status set to "Done"')
                             new_log_entry = {
                                 'event id': selected_event_id,
@@ -475,7 +471,7 @@ if page == 'Work Shop Order':
         st.download_button(
             label="Download completed work order.",
             data=excel_completed_work,
-            file_name='completed_work_order.xlsx',
+            file_name='completed_work_orders.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_work_completed_button'
         )
@@ -522,4 +518,3 @@ elif page == 'Clear data':
         ])
         st.session_state.log_df.to_excel('change_log.xlsx', index=False)
         st.success('Log data cleared!')
-

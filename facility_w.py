@@ -26,7 +26,7 @@ def load_checklist_data():
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Date', 'Rating', 'responsible person', 
-        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment','High Risk'])
+        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment','Safety related','Quality related'])
 
 def checklist_data():
     if os.path.exists('checklist.xlsx'):
@@ -148,7 +148,7 @@ checklist_items = {
     ]
 }
 
-repair_personnel = ['Shehab Ayman', 'sameh', 'Kaleed', 'Yasser Hassan', 'Mohamed El masry',"Zeinab Mobarak"]
+repair_personnel = ['shehab', 'sameh', 'kaleed', 'yasser', 'masry',"zeinab",'wael']
 
 # دالة لتوليد رقم الحدث التالي
 def get_next_event_id():
@@ -257,12 +257,15 @@ if page == 'Event Logging':
             uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             
             # Show risk checkbox only if Rating is 1, 2, or 3
-            if Rating in [1, 2, 3]:
+            if Rating in [1, 2, 3]: 
                 # Display a red warning message above the risk checkbox
-                st.markdown(f"<p style='color: red; font-size: 22px;'><b>Is this a high risk?</b></p>", unsafe_allow_html=True)
-                risk_value = st.checkbox('High Risk?', key=f'high_risk_checkbox_{category}_{selected_location}')
+                st.markdown(f"<p style='color: red; font-size: 22px;'><b>Is this Safety related?</b></p>", unsafe_allow_html=True)
+                risk_value = st.checkbox('Safety related?', key=f'high_risk_checkbox_{category}_{selected_location}')
+                st.markdown(f"<p style='color: red; font-size: 22px;'><b>Is this Quality related?</b></p>", unsafe_allow_html=True)
+                Quality_value = st.checkbox('Quality related?', key=f'Quality_related_checkbox_{category}_{selected_location}')
             else:
                 risk_value = None
+                Quality_value = None
             button_key = f"add_{category}_{selected_location}"
             if st.button(f'Add {category}', key=button_key):
                 if Rating in [0, 'N/A']:
@@ -295,7 +298,7 @@ if page == 'Event Logging':
                         except Exception as e:
                             st.error(f"An error occurred while saving the image: {str(e)}")
                             image_path = ""
-
+'Safety related','Quality related'
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,
@@ -308,7 +311,8 @@ if page == 'Event Logging':
                         'Expected repair Date': '',
                         'Actual Repair Date': '',
                         'image path': image_path,
-                        'High Risk': 'Yes' if risk_value else 'No'
+                        'Safety related': 'Yes' if risk_value else 'No',
+                        'Quality related': 'Yes' if Quality_value else 'No'
                     }
                     new_row_df = pd.DataFrame([new_row])
                     st.session_state.work_order_df = pd.concat([st.session_state.work_order_df, new_row_df], ignore_index=True)
@@ -332,7 +336,7 @@ if page == 'Event Logging':
         """, unsafe_allow_html=True)
         st.markdown("""
                 <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
-                    Updated checklist:
+                    checklist record:
                 </h2>
                 """, unsafe_allow_html=True)
         
@@ -347,7 +351,7 @@ if page == 'Event Logging':
 
         st.markdown("""
             <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
-                Updated work order:
+                Facility Maintenance:
             </h2>
             """, unsafe_allow_html=True)
         

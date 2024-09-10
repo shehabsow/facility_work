@@ -6,6 +6,7 @@ from PIL import Image
 import pytz
 import io
 from io import BytesIO
+import time
 # إعداد تكوين الصفحة في Streamlit
 st.set_page_config(
     layout="wide",
@@ -439,7 +440,9 @@ if page == 'Work Shop Order':
                             }
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
-                            save_change_log(st.session_state.log_df)  # استخدام الدالة لحفظ البيانات
+                            save_change_log(st.session_state.log_df) 
+                            time.sleep(1)
+                            st.experimental_rerun()# استخدام الدالة لحفظ البيانات
                             
     
             else:

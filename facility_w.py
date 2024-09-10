@@ -41,7 +41,7 @@ def load_completed_work_orders():
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Rating', 'responsible person', 
-        'Actual Repair Date', 'image path', 'comment' 'Status'])
+        'Actual Repair Date', 'image path', 'comment' ,'Status'])
     
 def load_change_log():
     if os.path.exists('change_log.xlsx'):

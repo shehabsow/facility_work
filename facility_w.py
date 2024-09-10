@@ -367,7 +367,7 @@ if page == 'Event Logging':
         
 if page == 'Work Shop Order':
     st.markdown("""
-                <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                <h2 style='text-align: center; font-size: 35px; color: #A52A2A;'>
                     Work Shop Order status:
                 </h2>
                 """, unsafe_allow_html=True)

@@ -36,7 +36,7 @@ def checklist_data():
         'Event Detector Name', 'Date', 'Rating', 'comment'])
     
 def load_completed_work_orders():
-    if os.path.exists('completed_work_orders.xlsx'):
+    if os.path.exists('completed_work_order.xlsx'):
         return pd.read_excel('completed_work_orders.xlsx', engine='openpyxl')
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
@@ -76,7 +76,7 @@ def save_checklist_data(df):
 
 def save_completed_work_orders(df):
     try:
-        df.to_excel('completed_work_orders.xlsx', index=False, engine='openpyxl')
+        df.to_excel('completed_work_order.xlsx', index=False, engine='openpyxl')
         st.success("Completed work orders saved successfully!")
     except Exception as e:
         st.error(f"An error occurred while saving the data: {str(e)}")

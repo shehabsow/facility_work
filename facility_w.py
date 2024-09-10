@@ -270,6 +270,7 @@ if page == 'Event Logging':
                     new_check_row = {
                         'event id': event_id,
                         'location': selected_location,
+                        'Rating': Rating,
                         'Element': category,
                         'Event Detector Name': Event_Detector_Name,
                         'Date': datetime.now(egypt_tz).replace(tzinfo=None),

@@ -441,8 +441,7 @@ if page == 'Work Shop Order':
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
                             save_change_log(st.session_state.log_df) 
-                            time.sleep(1)
-                            st.experimental_rerun()# استخدام الدالة لحفظ البيانات
+                            # استخدام الدالة لحفظ البيانات
                             
     
             else:

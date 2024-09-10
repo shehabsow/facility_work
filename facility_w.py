@@ -366,7 +366,12 @@ if page == 'Event Logging':
         
         
 if page == 'Work Shop Order':
-    st.title('Repair status update')
+    st.markdown("""
+                <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+                    Work Shop Order status:
+                </h2>
+                """, unsafe_allow_html=True)
+   
 
     # إنشاء تخطيط أفقي بعمودين
     col1, col2 = st.columns([2, 3])

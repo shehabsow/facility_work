@@ -37,7 +37,7 @@ def checklist_data():
     
 def load_completed_work_orders():
     if os.path.exists('completed_work_order.xlsx'):
-        return pd.read_excel('completed_work_orders.xlsx', engine='openpyxl')
+        return pd.read_excel('completed_work_order.xlsx', engine='openpyxl')
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
         'Rating', 'responsible person', 

@@ -298,7 +298,7 @@ if page == 'Event Logging':
                         except Exception as e:
                             st.error(f"An error occurred while saving the image: {str(e)}")
                             image_path = ""
-'Safety related','Quality related'
+
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,

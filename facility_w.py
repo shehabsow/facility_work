@@ -466,7 +466,7 @@ if page == 'Work Shop Order':
             st.warning("Select an event to view details.")
 
         st.markdown("""
-            <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
+            <h2 style='text-align: center; font-size: 27px; color: #A52A2A;'>
                 completed work order:
             </h2>
             """, unsafe_allow_html=True)

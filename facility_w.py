@@ -40,8 +40,8 @@ def load_completed_work_orders():
         return pd.read_excel('completed_work_order.xlsx', engine='openpyxl')
     return pd.DataFrame(columns=[
         'event id', 'location', 'Element', 'Event Detector Name', 
-        'Rating', 'responsible person', 
-        'Actual Repair Date', 'image path', 'comment' ,'Status'])
+        'Date', 'Rating', 'responsible person', 
+        'Expected repair Date', 'Actual Repair Date', 'image path', 'comment','Safety related','Quality related'])
     
 def load_change_log():
     if os.path.exists('change_log.xlsx'):

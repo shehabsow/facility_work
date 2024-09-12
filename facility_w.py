@@ -507,7 +507,7 @@ elif page == 'View Change Log':
             #'event id', 'location', 'Element', 'Event Detector Name', 
             #'Date', 'Rating', 'responsible person', 
             #'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'
-        ])
+        #])
         #st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
         #st.success('Checklist data cleared!')
 
@@ -522,6 +522,6 @@ elif page == 'View Change Log':
         #st.session_state.log_df = pd.DataFrame(columns=[
             #'event id', 'modifier name', 'modification Date', 
             #'modification type', 'new Date'
-        ])
+        #])
         #st.session_state.log_df.to_excel('change_log.xlsx', index=False)
         #st.success('Log data cleared!')

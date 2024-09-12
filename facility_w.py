@@ -500,7 +500,7 @@ elif page == 'View Change Log':
     
 
     
-elif page == 'Clear data':
+#elif page == 'Clear data':
     st.title('Clear Data')
     if st.button('Clear work order Data'):
         st.session_state.work_order_df = pd.DataFrame(columns=[

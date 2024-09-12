@@ -501,27 +501,27 @@ elif page == 'View Change Log':
 
     
 #elif page == 'Clear data':
-    st.title('Clear Data')
-    if st.button('Clear work order Data'):
-        st.session_state.work_order_df = pd.DataFrame(columns=[
+    #st.title('Clear Data')
+    #if st.button('Clear work order Data'):
+        #st.session_state.work_order_df = pd.DataFrame(columns=[
             'event id', 'location', 'Element', 'Event Detector Name', 
             'Date', 'Rating', 'responsible person', 
             'Expected repair Date', 'Actual Repair Date', 'image path', 'comment'
         ])
-        st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
-        st.success('Checklist data cleared!')
+        #st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
+        #st.success('Checklist data cleared!')
 
-    if st.button('Clear Checklist Data'):
-        st.session_state.df = pd.DataFrame(columns=[
+    #if st.button('Clear Checklist Data'):
+        #st.session_state.df = pd.DataFrame(columns=[
         'event id', 'location', 'Element', 
         'Event Detector Name', 'Date', 'Rating', 'comment'])
-        st.session_state.df.to_excel('checklist.xlsx', index=False)
-        st.success('Checklist data cleared!')
+        #st.session_state.df.to_excel('checklist.xlsx', index=False)
+        #st.success('Checklist data cleared!')
 
-    if st.button('Clear Log Data'):
-        st.session_state.log_df = pd.DataFrame(columns=[
+    #if st.button('Clear Log Data'):
+        #st.session_state.log_df = pd.DataFrame(columns=[
             'event id', 'modifier name', 'modification Date', 
             'modification type', 'new Date'
         ])
-        st.session_state.log_df.to_excel('change_log.xlsx', index=False)
-        st.success('Log data cleared!')
+        #st.session_state.log_df.to_excel('change_log.xlsx', index=False)
+        #st.success('Log data cleared!')

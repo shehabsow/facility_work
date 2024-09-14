@@ -7,7 +7,7 @@ import pytz
 import io
 from io import BytesIO
 import time
-# إعداد تكوين الصفحة في Streamlit
+
 st.set_page_config(
     layout="wide",
     page_title='facility_w',
@@ -15,7 +15,7 @@ st.set_page_config(
 
 egypt_tz = pytz.timezone('Africa/Cairo')
 
-# تحميل البيانات مرة واحدة باستخدام التخزين المؤقت
+
 
 def load_checklist_data():
     if os.path.exists('work_order_records.xlsx'):
@@ -91,14 +91,7 @@ def save_change_log(df):
         st.error(f"An error occurred while saving the data: {str(e)}")
 
 
-if 'work_order_df' not in st.session_state:
-    st.session_state.work_order_df = load_checklist_data()
-if 'df' not in st.session_state:
-    st.session_state.df = checklist_data()
-if 'completed' not in st.session_state:
-    st.session_state.completed = load_completed_work_orders()
-if 'log_df' not in st.session_state:
-    st.session_state.log_df = load_change_log()
+
 
 
 checklist_items = {
@@ -151,7 +144,7 @@ checklist_items = {
 
 repair_personnel = ['shehab', 'sameh', 'kaleed', 'yasser', 'masry',"zeinab",'wael']
 
-# دالة لتوليد رقم الحدث التالي
+
 def get_next_event_id():
     if st.session_state.work_order_df.empty or 'event id' not in st.session_state.work_order_df.columns:
         return 'Work Order 1'
@@ -181,7 +174,9 @@ if 'df' not in st.session_state:
 if 'log_df' not in st.session_state:
     st.session_state.log_df = load_change_log()
 
+
 page = st.sidebar.radio('Select page', ['Event Logging', 'Work Shop Order', 'View Change Log'])
+
 
 if page == 'Event Logging':
     work_order = load_checklist_data()
@@ -197,19 +192,16 @@ if page == 'Event Logging':
         search_keyword = st.session_state.get('search_keyword', '')
         search_keyword = st.text_input("Enter keyword to search:", search_keyword)
         search_button = st.button("Search")
-        search_option = 'All Columns'
-    
+        search_option = 'All Columns'    
     def search_in_dataframe(df_Material, keyword, option):
         if option == 'All Columns':
             result = df_Material[df_Material.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)]
         else:
             result = df_Material[df_Material[option].astype(str).str.contains(keyword, case=False)]
         return result
-    
     if st.session_state.get('refreshed', False):
         st.session_state.search_keyword = ''
         st.session_state.refreshed = False
-    
     if search_button and search_keyword:
         st.session_state.search_keyword = search_keyword
         search_results = search_in_dataframe(st.session_state.work_order_df, search_keyword, search_option)
@@ -220,9 +212,7 @@ if page == 'Event Logging':
     
     image_save_path = 'uploaded_images'
     os.makedirs(image_save_path, exist_ok=True)
-    
     col1, col2 = st.columns([2, 6])
-    
     with col1:
         st.markdown(f"<h3 style='color:black; font-size:30px;'>Select Location:</h3>", unsafe_allow_html=True)
         locations = ['Admin indoor', 'QC lab & Sampling room', 'Processing', 'Receiving area & Reject room',
@@ -230,9 +220,7 @@ if page == 'Event Logging':
                      'Outdoor & security gates', 'Electric rooms', 'Waste WTP & Incinerator',
                      'Service Building & Garden Store', 'Pumps & Gas Rooms']
     
-        # عرض قائمة منسدلة لاختيار الموقع
         selected_location = st.selectbox('Choose form these areas',locations)
-    
         if selected_location:
             st.markdown(
             f'<p style="font-size: 23px; color: green;">You selected: <span style="font-size: 25px; color: #A52A2A;">{selected_location}</span></p>'
@@ -240,16 +228,14 @@ if page == 'Event Logging':
             unsafe_allow_html=True
         )
 
+    
     col1, col2 = st.columns([3,3])
-
     with col1:
-
         for category, items in checklist_items.items():
             st.markdown(f"<h3 style='color:green; font-size:30px;'>{category}.</h3>", unsafe_allow_html=True)
-    
             for item in items:
                 st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
-        
+                
             col1a, col2a, col3a, col4a = st.columns([1, 2, 2, 2])
             Event_Detector_Name = col2a.text_input('Detector Name', key=f"detector_name_{category}_{selected_location}")
             Rating = col1a.selectbox('Rating', [0, 1, 2, 3, 'N/A'], key=f"rating_{category}_{selected_location}")
@@ -257,9 +243,7 @@ if page == 'Event Logging':
             responsible_person = col4a.selectbox('Responsible Person', [''] + repair_personnel, key=f"person_{category}_{selected_location}")
             uploaded_file = st.file_uploader(f"Upload Image ({category})", type=["jpg", "jpeg", "png"], key=f"image_{category}_{selected_location}")
             
-            # Show risk checkbox only if Rating is 1, 2, or 3
             if Rating in [1, 2, 3]: 
-                # Display a red warning message above the risk checkbox
                 st.markdown(f"<p style='color: red; font-size: 22px;'><b>Is this Safety related?</b></p>", unsafe_allow_html=True)
                 risk_value = st.checkbox('Safety related?', key=f'high_risk_checkbox_{category}_{selected_location}')
                 st.markdown(f"<p style='color: red; font-size: 22px;'><b>Is this Quality related?</b></p>", unsafe_allow_html=True)
@@ -299,7 +283,6 @@ if page == 'Event Logging':
                         except Exception as e:
                             st.error(f"An error occurred while saving the image: {str(e)}")
                             image_path = ""
-
                     new_row = {
                         'event id': event_id,
                         'location': selected_location,
@@ -322,7 +305,6 @@ if page == 'Event Logging':
                                 
 
     with col2:
-        
         st.markdown("""
         <div style="border: 2px solid #ffeb3b; padding: 20px; background-color: #e0f7fa; color: #007BFF; border-radius: 5px; width: 100%">
             <h4 style='text-align: center;color: blue;'>Inspection Rating System.</h4>
@@ -340,7 +322,6 @@ if page == 'Event Logging':
                     checklist record:
                 </h2>
                 """, unsafe_allow_html=True)
-        
         st.dataframe(st.session_state.df)
         excel_data_checklist = to_excel(st.session_state.df)
         st.download_button(
@@ -349,13 +330,11 @@ if page == 'Event Logging':
             file_name='checklist.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             key='download_checklist')
-
         st.markdown("""
             <h2 style='text-align: center; font-size: 30px; color: #A52A2A;'>
                 Facility Maintenance:
             </h2>
             """, unsafe_allow_html=True)
-        
         st.dataframe(st.session_state.work_order_df)
         excel_data_work = to_excel(st.session_state.work_order_df)
         st.download_button(
@@ -372,26 +351,19 @@ if page == 'Work Shop Order':
                     Work Shop Order status:
                 </h2>
                 """, unsafe_allow_html=True)
-   
-
-    # إنشاء تخطيط أفقي بعمودين
+    
     col1, col2 = st.columns([2, 3])
-
-    # الجزء الأول: لاختيار رقم الحدث وإدخال اسم المعدل
     with col1:
         if not st.session_state.work_order_df.empty:
             selected_names = st.multiselect('Select Responsible Person(s)', repair_personnel)
             filtered_events = st.session_state.work_order_df[st.session_state.work_order_df['responsible person'].isin(selected_names)]
-
             if not filtered_events.empty:
                 event_ids = filtered_events['event id'].tolist()
                 selected_event_id = st.selectbox('Select Event ID', event_ids)
-
                 if selected_event_id:
                     selected_event = filtered_events[filtered_events['event id'] == selected_event_id]
                     if not selected_event.empty:
                         st.session_state.selected_event = selected_event  # حفظ الحدث المحدد في الحالة
-
                 modifier_name = st.text_input('Modifier Name')
                 st.button("Update page")
                 if modifier_name in repair_personnel:
@@ -399,13 +371,11 @@ if page == 'Work Shop Order':
                     Actual_Repair_Date = st.date_input('Actual Repair Date')
                     update_start_button = st.button('Update Expected repair Date')
                     update_end_button = st.button('Update Actual Repair Date')
-
                     if update_start_button:
                         if selected_event_id in st.session_state.work_order_df['event id'].values:
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Expected repair Date'] = Expected_repair_Date.strftime('%Y-%m-%d')
                             st.session_state.work_order_df.to_excel('work_order_records.xlsx', engine='openpyxl', index=False)
                             st.success('Expected repair Date Updated successfully')
-                            
                             new_log_entry = {
                                 'event id': selected_event_id,
                                 'modifier name': modifier_name,
@@ -416,19 +386,13 @@ if page == 'Work Shop Order':
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
                             st.session_state.log_df.to_excel('change_log.xlsx', engine='openpyxl',  index=False)
-
                     if update_end_button:
                         if selected_event_id in st.session_state.work_order_df['event id'].values:
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Actual Repair Date'] = Actual_Repair_Date.strftime('%Y-%m-%d')
-                            
-                            # تعيين الحالة إلى "Done" إذا تم إدخال Actual Repair Date
                             st.session_state.work_order_df.loc[st.session_state.work_order_df['event id'] == selected_event_id, 'Status'] = 'Done'
-                            
-                            # إضافة إلى سجل أوامر العمل المكتملة
                             completed_order = st.session_state.work_order_df[st.session_state.work_order_df['event id'] == selected_event_id]
                             completed_orders_df = pd.concat([load_completed_work_orders(), completed_order], ignore_index=True)
                             save_completed_work_orders(completed_orders_df)
-                            
                             st.session_state.work_order_df.to_excel('work_order_records.xlsx', index=False)
                             st.success('Actual Repair Date Updated and status set to "Done"')
                             new_log_entry = {
@@ -441,29 +405,21 @@ if page == 'Work Shop Order':
                             new_log_df = pd.DataFrame([new_log_entry])
                             st.session_state.log_df = pd.concat([st.session_state.log_df, new_log_df], ignore_index=True)
                             save_change_log(st.session_state.log_df) 
-                            # استخدام الدالة لحفظ البيانات
-                            
-    
             else:
                 st.warning("No events found for the selected person(s).")
         else:
             st.warning("No checklist data available.")
+
     
-    # الجزء الثاني: عرض تفاصيل الحدث المحدد
     with col2:
         if 'selected_event' in st.session_state and not st.session_state.selected_event.empty:
             selected_event = st.session_state.selected_event
-            
-            # عرض تفاصيل الحدث ك DataFrame
             st.dataframe(selected_event)
-
-            # عرض الصورة إذا كانت موجودة
             image_path = selected_event['image path'].values[0]
             if isinstance(image_path, str) and image_path and os.path.exists(image_path):
                 st.image(image_path, caption=f'Image for Event {selected_event["event id"].values[0]}', width=300)
             else:
                 st.warning("Image not found or path is invalid.")
-
         else:
             st.warning("Select an event to view details.")
 
@@ -472,7 +428,6 @@ if page == 'Work Shop Order':
                 completed work order:
             </h2>
             """, unsafe_allow_html=True)
-        
         st.dataframe(st.session_state.completed)
         excel_completed_work = to_excel(st.session_state.completed)
         st.download_button(
@@ -485,12 +440,9 @@ if page == 'Work Shop Order':
     
 elif page == 'View Change Log':
     st.title('View Change Log')
-
     change_log = load_change_log()
     st.write(change_log)
     excel_data = to_excel(st.session_state.log_df)
-
-# زر التنزيل لصيغة Excel
     st.download_button(
         label="Download Checklist as Excel",
         data=excel_data,

@@ -245,7 +245,7 @@ if page == 'Event Logging':
     with col1:
 
         for category, items in checklist_items.items():
-            st.markdown(f"<h3 style='color:green; font-size:24px;'>{category}.</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:green; font-size:27px;'>{category}.</h3>", unsafe_allow_html=True)
     
             for item in items:
                 st.markdown(f"<span style='color:blue; font-size:18px;'>* {item}</span>", unsafe_allow_html=True)
